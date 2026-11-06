@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>T/aco — Boulder's original taqueria</title>
+<style>
+  @font-face { font-family: "Sancreek"; src: url("Sancreek-Regular.ttf"); }
+  @font-face { font-family: "DM Sans"; src: url("DMSans.ttf"); font-weight: 100 900; }
+  :root {
+    --surface:#fbf4e8; --surface-raised:#f3e8d5; --ink:#2b1a0e; --ink-muted:#7a4a1e; --action:#9e4c17; --on-action:#fbf4e8;
+    --focus:#3f6b36; --line:#e3d5be; --brand-sage:#91ac7f; --surface:#fbf4e8;
+    --display:"Sancreek", serif; --sans:"DM Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background: var(--surface); color: var(--ink); font-family: var(--sans); }
+  .page { width: 1600px; }
+  a { color: inherit; }
+
+  header { background: var(--surface); height: 96px; display:flex; align-items:center; justify-content:space-between; padding: 0 64px; }
+  header img { height: 48px; }
+  nav { display:flex; gap: 40px; font-size: 17px; font-weight: 500; }
+  nav a { color: var(--ink); text-decoration: none; padding-bottom: 6px; }
+  .cta { background: var(--action); color: var(--on-action); padding: 14px 24px; font-weight: 500; text-decoration:none; }
+
+  /* 1. hero on the wall */
+  /* the hero: the film runs full-bleed; the statement sits on a wood sheet in front of it */
+  .hero { position: relative; height: 680px; overflow: hidden; color: var(--surface); background: url("wood2x-carved.png") center 62% / cover no-repeat; }
+  .hero::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.34); z-index: 1; }
+  .board { position: absolute; inset: 0; z-index: 2; }
+  .board .in { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  .quote { font-family: var(--display); font-size: 30px; line-height: 1.1; margin: 40px 0 0; text-align: center; opacity: 0.92; }
+  .statement { display: flex; align-items: center; gap: 36px; margin: 0; }
+  .side { display: flex; flex-direction: column; }
+  .l { align-items: flex-end; text-align: right; }
+  .r { align-items: flex-start; text-align: left; }
+  .l .w { font-family: var(--display); font-size: 68px; line-height: 1.02; letter-spacing: 0.01em; }
+  .r .w { font-family: var(--display); font-size: 30px; line-height: 1.25; }
+  .r { padding-top: 10px; }
+  .slash { height: 150px; flex: none; }
+  .slash .offset { fill: var(--sage); } .slash .face { fill: var(--surface); stroke: var(--ink); stroke-width: 3; }
+  .meta { margin: 24px 0 0; font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.8; }
+  .go { margin-top: 20px; display: inline-block; padding: 14px 22px; background: var(--surface); color: var(--ink); font-weight: 500; font-size: 17px; text-decoration: none; }
+
+  /* 2. the doors */
+  .doors { padding: 88px 160px 72px; border-top: 1px solid var(--line); }
+  .doors h2 { font-family: var(--display); font-weight: 400; font-size: 32px; margin: 0 0 40px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 48px; }
+  .door { position: relative; display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: end; text-decoration: none; color: var(--ink); min-height: 280px; }
+  .door .text { padding-bottom: 14px; }
+  .door h3 { font-family: var(--display); font-weight: 400; font-size: 28px; margin: 0 0 8px; }
+  .door p { font-size: 18px; line-height: 1.5; margin: 0 0 14px; color: var(--ink-muted); }
+  .door .go { font-weight: 500; font-size: 17px; border-bottom: 2px solid var(--action); padding-bottom: 2px; display: inline-block; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+  .door .frame { position: relative; height: 280px; }
+  .door .pic { position: absolute; inset: 0; background-size: cover; background-position: center; clip-path: polygon(130px 0, 100% 0, 100% 100%, 0 100%); transition: transform .6s cubic-bezier(.2,.7,.2,1); transform-origin: 60% 60%; }
+  .door .frame::before { content: ""; position: absolute; inset: 0; clip-path: polygon(130px 0, 100% 0, 100% 100%, 0 100%); box-shadow: inset 0 0 0 1px rgba(251,244,232,0.35); pointer-events: none; z-index: 2; }
+  .door .sill { position: absolute; left: 0; right: 0; bottom: -10px; height: 10px; background: var(--ink-muted); opacity: 0.35; transform: scaleX(0.92); transform-origin: left; transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .6s; }
+  .door .handle { position: absolute; right: 22px; top: 50%; height: 34px; width: 22px; transform: translateY(-50%); z-index: 3; opacity: 0; transition: opacity .35s, transform .6s cubic-bezier(.2,.7,.2,1); }
+  .door .handle .face { fill: var(--surface); stroke: var(--ink); stroke-width: 3; } .door .handle .offset { fill: var(--brand-sage); }
+  .door:hover .pic, .door:focus-visible .pic { transform: scale(1.04); }
+  .door:hover .sill, .door:focus-visible .sill { transform: scaleX(1); opacity: 0.6; }
+  .door:hover .handle, .door:focus-visible .handle { opacity: 1; transform: translateY(-50%) translateX(-6px); }
+  .door:hover .go, .door:focus-visible .go { transform: translateX(6px); }
+  .door:focus-visible { outline: 3px solid var(--focus); outline-offset: 6px; }
+  @media (prefers-reduced-motion: reduce) { .door .pic, .door .sill, .door .handle, .door .go { transition: none; } .door:hover .pic { transform: none; } }
+
+  /* 2. taste the difference — paper, the cilantro drop cut at the slash's angle */
+  .open { position: relative; height: 1000px; overflow: hidden; background: var(--surface); display: grid; grid-template-columns: 640px 1fr; }
+  .open-text { padding: 250px 0 0 160px; }
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; margin: 0 0 20px; color: var(--ink-muted); }
+  .open h2 { font-family: var(--sans); font-weight: 400; font-size: 30px; line-height: 1.35; margin: 0 0 36px; max-width: 440px; color: var(--ink); }
+  .open h2 em { font-family: var(--display); font-style: normal; font-size: 40px; line-height: 1; }
+  .open .hours { max-width: 440px; margin: 0 0 36px; font-size: 17px; line-height: 1.5; }
+  .open .hours b { font-family: var(--display); font-weight: 400; font-size: 22px; display: block; margin-bottom: 2px; }
+  .open .hours p { margin: 0 0 14px; }
+  .open .hours p:last-child { margin: 0; color: var(--ink-muted); }
+  .beats { position: absolute; inset: 0; margin: 0; font-family: var(--display); font-size: 22px; line-height: 1; pointer-events: none; }
+  .beat { position: absolute; z-index: 2; white-space: nowrap; color: var(--ink-muted); }
+  .beat-1 { left: 160px; top: 150px; }
+  .beat-2 { left: 160px; bottom: 80px; }
+  .beat-3 { left: 1260px; top: 560px; }
+  .cuts { position: relative; height: 1000px; }
+  .cut { position: absolute; inset: 0; background: url("cilantro.jpg") 0 -118px / 960px auto no-repeat; }
+  .cut-a { clip-path: polygon(298px 0, 100% 0, 100% 640px, 0 640px); }
+  .cut-b { clip-path: polygon(135px 710px, 100% 710px, 100% 1000px, 0 1000px); }
+  .leaves { position: absolute; left: 313px; top: 497px; width: 201px; filter: drop-shadow(0 4px 5px rgba(43,26,14,0.22)); }
+
+  /* 3. catering: a sheet over the plates */
+  .uncover { position: relative; padding: 140px 0; overflow: hidden; }
+  .uncover video, .uncover .film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .uncover::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.38); z-index: 1; }
+  .uncover .sheet { z-index: 2; }
+  @media (prefers-reduced-motion: reduce) { .uncover video { display: none; } .uncover { background: url("flatlay.jpg") center 40% / cover no-repeat; } }
+  .sheet { position: relative; width: 920px; margin: 0 auto; background: var(--surface); padding: 72px 96px 80px; }
+  .sheet { width: 760px; padding: 64px 80px 72px; }
+  .sheet .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin: 0 0 14px; }
+  .sheet h2 { font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; margin: 0 0 20px; }
+  .sheet ul { list-style: none; padding: 0; margin: 0 0 8px; font-size: 18px; line-height: 1.55; }
+  .sheet li { padding: 10px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 24px; }
+  .sheet li:last-child { border-bottom: 1px solid var(--line); }
+  .sheet li span:last-child { color: var(--ink-muted); white-space: nowrap; }
+  .sheet p { font-size: 18px; line-height: 1.55; margin: 0 0 20px; max-width: 64ch; }
+  .divider { display:flex; justify-content:center; margin: 48px 0; }
+  .divider svg { height: 48px; }
+  .divider .offset { fill: var(--brand-sage); } .divider .face { fill: var(--ink); stroke: var(--surface); stroke-width:3; }
+  .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .visit h3 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0 0 12px; }
+  .visit dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; font-size: 18px; line-height: 1.5; }
+  .visit dt { color: var(--ink-muted); } .visit dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .visit address { font-style: normal; font-size: 18px; line-height: 1.55; }
+  .btns { display: flex; gap: 16px; margin-top: 32px; }
+  .btn { display: inline-block; padding: 16px 24px; background: var(--action); color: var(--on-action); font-size: 17px; font-weight: 500; text-decoration: none; border: 2px solid var(--action); }
+  .btn.secondary { background: transparent; color: var(--ink); border-color: var(--ink-muted); }
+
+  /* 4. footer */
+  footer { padding: 72px 160px 56px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 48px; border-top: 1px solid var(--line); }
+  footer img { height: 44px; margin-bottom: 20px; }
+  footer a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
+  footer p, footer li { font-size: 16px; line-height: 1.55; margin: 0; }
+  footer ul { list-style: none; padding: 0; margin: 0; }
+  footer h4 { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin: 0 0 12px; }
+  footer .gift { color: var(--ink-muted); margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a href="index.html" aria-label="T/aco home"><img src="logo-rgba.png" alt="T/aco"></a>
+    <nav aria-label="Main">
+      <a href="menu.html">Menu</a><a href="location.html">Location &amp; Hours</a><a href="catering.html">Catering</a><a href="events.html">Private Events</a><a href="people.html">Our People</a>
+    </nav>
+    <a class="cta" href="order.html">Order online</a>
+  </header>
+
+  <main>
+  <section class="hero" aria-labelledby="h1">
+        <div class="board">
+      <div class="in">
+        <h1 id="h1" class="statement">
+          <span class="side l"><span class="w">Large flavor.</span><span class="w">Large hospitality.</span></span>
+          <svg class="slash" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+          <span class="side r"><span class="w">Tiny.</span><span class="w">Local.</span><span class="w">Beloved.</span></span>
+        </h1>
+        <p class="meta">Boulder · Since 2012</p>
+        <a class="go" href="menu.html">Explore the menu</a>
+        <p class="quote">“The world’s largest tiny restaurant.”</p>
+      </div>
+    </div>
+  </section>
+
+    <section class="open" aria-labelledby="t">
+      <p class="beats" aria-label="Milled at six. Pressed at seven. Cilantro at noon.">
+        <span class="beat beat-1">Milled at six.</span>
+        <span class="beat beat-2">Pressed at seven.</span>
+        <span class="beat beat-3">Cilantro at noon.</span>
+      </p>
+      <div class="open-text">
+        <p class="eyebrow">Boulder’s original taqueria</p>
+        <h2 id="t"><em>Taste the difference.</em> We mill our own organic corn every morning into the masa that becomes every tortilla, chip and tostada we serve.</h2>
+        <div class="hours">
+          <p><b>Lunch 11:00 am – 3:00 pm</b>Every day. First come, first served.</p>
+          <p><b>Dinner 3:00 pm – close</b>Sun–Thu until 9:00 pm. Fri–Sat until 10:00 pm.</p>
+          <p>1175 Walnut Street, Boulder · (303) 443-9468</p>
+        </div>
+        <div class="btns"><a class="btn" href="order.html">Order online</a><a class="btn secondary" href="https://maps.google.com/?q=T%2FACO+1175+Walnut+St+Boulder+CO">Get directions</a></div>
+      </div>
+      <div class="cuts" aria-hidden="true">
+        <div class="cut cut-a"></div>
+        <div class="cut cut-b"></div>
+        <img class="leaves" src="leaves-key.png" alt="">
+      </div>
+    </section>
+
+    <section class="uncover" aria-labelledby="c">
+      <video class="film" autoplay muted loop playsinline poster="flatlay.jpg" aria-hidden="true"><source src="catering-loop-15s.mp4" type="video/mp4"></video>
+      <article class="sheet">
+        <p class="eyebrow">Catering</p>
+        <h2 id="c">Tacos to the people.</h2>
+        <p>We bring the T/aco experience to you — the same tortillas, salsas and guacamole, made the morning of your event. Pick up, drop off, or let us run the whole thing.</p>
+        <ul>
+          <li><span>Pick-up taco bar</span><span>from 10 guests</span></li>
+          <li><span>Drop-off, set up and served</span><span>from 20 guests</span></li>
+          <li><span>Full service with the bar</span><span>up to 200 guests</span></li>
+        </ul>
+        <div class="btns"><a class="btn" href="order.html">Plan an order</a><a class="btn secondary" href="events.html">Private events</a></div>
+      </article>
+    </section>
+
+    <section class="doors" aria-labelledby="d">
+      <h2 id="d">Where to next.</h2>
+      <div class="grid">
+        <a class="door" href="menu.html">
+          <div class="text"><h3>Menu</h3><p>Tacos, ceviche, salads. Tortillas made this morning.</p><span class="go">See the menu</span></div>
+          <div class="frame">
+            <div class="pic" style="background-image:url('salsas.jpg')"></div>
+            <svg class="handle" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+            <div class="sill"></div>
+          </div>
+        </a>
+        <a class="door" href="secret.html">
+          <div class="text"><h3>Secret menu</h3><p>If you know, you know. Ask at the bar.</p><span class="go">Shhh</span></div>
+          <div class="frame">
+            <div class="pic" style="background-image:url('taco-hand.jpg')"></div>
+            <svg class="handle" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+            <div class="sill"></div>
+          </div>
+        </a>
+        <a class="door" href="events.html">
+          <div class="text"><h3>Private events</h3><p>Have the place to yourself. One room or all of it.</p><span class="go">Book the room</span></div>
+          <div class="frame">
+            <div class="pic" style="background-image:url('bar.jpg')"></div>
+            <svg class="handle" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+            <div class="sill"></div>
+          </div>
+        </a>
+        <a class="door" href="people.html">
+          <div class="text"><h3>Our people</h3><p>One room. Fourteen years. The same hands.</p><span class="go">Meet them</span></div>
+          <div class="frame">
+            <div class="pic" style="background-image:url('marg.jpg')"></div>
+            <svg class="handle" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+            <div class="sill"></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>
+      <img src="logo-rgba.png" alt="T/aco">
+      <p>An urban taqueria at 1175 Walnut Street, Boulder. Open daily since May 2012.</p>
+      <p class="gift">Every dollar from gift cards goes to our kitchen staff and their families.</p>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <ul><li><a href="menu.html">Menu</a></li><li><a href="secret.html">Secret menu</a></li><li><a href="location.html">Location &amp; hours</a></li><li><a href="people.html">Our people</a></li><li><a href="gallery.html">Look around</a></li></ul>
+    </div>
+    <div>
+      <h4>Bring us to you</h4>
+      <ul><li><a href="catering.html">Catering</a></li><li><a href="events.html">Private events</a></li><li>Gift cards</li><li><a href="https://www.instagram.com/tacoboulder/">Instagram</a></li></ul>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

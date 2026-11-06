@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Location &amp; Hours — T/aco</title>
+<style>
+  @font-face { font-family: "Sancreek"; src: url("Sancreek-Regular.ttf"); }
+  @font-face { font-family: "DM Sans"; src: url("DMSans.ttf"); font-weight: 100 900; }
+  :root { --surface:#fbf4e8; --surface-raised:#f3e8d5; --ink:#2b1a0e; --ink-muted:#7a4a1e; --action:#9e4c17; --on-action:#fbf4e8; --focus:#3f6b36; --line:#e3d5be; --sage:#91ac7f; --display:"Sancreek",serif; --sans:"DM Sans",system-ui,sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background: var(--surface); color: var(--ink); font-family: var(--sans); }
+  main { position: relative; isolation: isolate; }
+  @font-face { font-family: "Hand"; src: url("Caveat.ttf"); font-weight: 400 700; }
+  .thread { position: absolute; left: 0; top: 0; width: 1600px; height: 100%; pointer-events: none; z-index: 3; overflow: visible; }
+  .thread path { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .note { position: absolute; left: 536px; top: 566px; width: 560px; transform: rotate(-1deg); pointer-events: none; z-index: 3; }
+
+  .map { z-index: 1; } .map .frame, .map .pin { z-index: 1; position: relative; }
+  .door { position: relative; z-index: 1; }
+  .page { width: 1600px; }
+  header { background: var(--surface); height: 96px; display:flex; align-items:center; justify-content:space-between; padding: 0 64px; }
+  header img { height: 48px; }
+  nav { display:flex; gap: 40px; font-size: 17px; font-weight: 500; }
+  nav a { color: var(--ink); text-decoration: none; padding-bottom: 6px; }
+  nav a[aria-current] { border-bottom: 3px solid var(--action); }
+  .cta { background: var(--action); color: var(--on-action); padding: 14px 24px; font-weight: 500; text-decoration:none; display: inline-block; }
+  .cta.secondary { background: transparent; color: var(--ink); border: 2px solid var(--ink-muted); padding: 12px 22px; }
+
+  /* 1. the answer, on paper: open now, hours, address */
+  .top { position: relative; padding: 72px 160px 40px; min-height: 700px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; overflow: hidden; }
+  .top > * { position: relative; z-index: 1; }
+  .top .stand { position: absolute; left: 150px; top: 330px; width: 560px; height: 360px; z-index: 0; pointer-events: none; }
+  .top .stand .shadow { position: absolute; left: -16px; width: 470px; top: 288px; height: 40px; background: radial-gradient(ellipse at 50% 50%, rgba(43,26,14,0.26) 0%, rgba(43,26,14,0.11) 42%, rgba(43,26,14,0) 72%); transform: skewX(-30deg); filter: blur(5px); }
+  .top .stand .plate { position: absolute; left: 0; top: 0; width: 420px; height: 330px; background: url("sketch-v2-crop.png") 0 0 / 420px auto no-repeat; }
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin: 0 0 16px; }
+  h1 { font-family: var(--display); font-weight: 400; font-size: 56px; line-height: 1; margin: 0 0 20px; }
+  .status { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 500; margin: 0 0 28px; }
+  .status .dot { width: 12px; height: 12px; background: var(--focus); border-radius: 2px; }
+  .status span.muted { font-weight: 400; color: var(--ink-muted); }
+  address { font-style: normal; font-size: 20px; line-height: 1.5; margin: 0 0 24px; }
+  address a { color: var(--ink); }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; position: relative; }
+  .btns::before { content:""; position:absolute; inset: -16px -28px -16px -24px; background: var(--surface); z-index: -1; }
+
+  .hours h2 { font-family: var(--display); font-weight: 400; font-size: 28px; margin: 0 0 16px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { text-align: left; padding: 12px 0; border-top: 1px solid var(--line); font-weight: 400; }
+  tr:last-child td, tr:last-child th { border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-muted); width: 40%; }
+  td { font-variant-numeric: tabular-nums; }
+  tr.today th, tr.today td { font-weight: 500; background: var(--surface-raised); }
+  tr.today th { padding-left: 12px; }
+  caption { text-align: left; font-size: 15px; color: var(--ink-muted); caption-side: bottom; padding-top: 12px; }
+
+  /* 2. the room with the door up — one wide photo, slash-cut on the left */
+  .door { display: grid; grid-template-columns: 480px 1fr; height: 620px; }
+  .door .text { padding: 150px 48px 0 160px; }
+  .door h2 { font-family: var(--display); font-weight: 400; font-size: 36px; line-height: 1.1; margin: 0 0 14px; }
+  .door p { font-size: 18px; line-height: 1.55; color: var(--ink-muted); margin: 0 0 12px; max-width: 30ch; }
+  .door figure { margin: 0; overflow: hidden; }
+  .door img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 60%; display: block; clip-path: polygon(220px 0, 100% 0, 100% 100%, 0 100%); }
+
+  /* 3. the practical rows, three up */
+  .facts { padding: 88px 160px 120px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; }
+  .facts h3 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0 0 10px; }
+  .facts p { font-size: 17px; line-height: 1.55; color: var(--ink-muted); margin: 0 0 10px; }
+  .facts p b { font-weight: 500; color: var(--ink); }
+
+  /* 4. the map: a static map image with a text alternative, never an iframe */
+  /* the map: a framed object on the patio wall, the pen arriving at its right edge */
+  .map { position: relative; height: 720px; background: url("patio-night.jpg") center 45% / cover no-repeat; display: grid; grid-template-columns: 1fr 440px; gap: 64px; align-items: center; padding: 0 160px 0 200px; }
+  .map::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.62); z-index: 0; }
+  .map .frame { position: relative; height: 460px; border: 10px solid var(--surface); background: var(--surface); box-shadow: 0 24px 60px rgba(20,12,6,0.45); }
+  .map .frame::after { content:""; position:absolute; inset: 8px; border: 1.5px solid var(--ink); pointer-events:none; }
+  .map .frame iframe, .map .frame img { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); border: 0; display: block; object-fit: cover; filter: saturate(0.6) sepia(0.15) contrast(0.96); }
+  .map .pin { position: relative; padding: 0; max-width: 420px; color: var(--surface); }
+  .map .pin p { color: #d9c7ae; }
+  .map .pin .slash .face { fill: var(--surface); stroke: var(--ink); } 
+  .map .pin .cta { background: var(--surface); color: var(--ink); }
+  .slash { height: 22px; vertical-align: -4px; margin-right: 6px; }
+  .slash .offset { fill: var(--sage); } .slash .face { fill: var(--ink); stroke: var(--surface); stroke-width: 3; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a href="index.html" aria-label="T/aco home"><img src="logo-rgba.png" alt="T/aco"></a>
+    <nav aria-label="Main"><a href="menu.html">Menu</a><a href="location.html" aria-current="page">Location &amp; Hours</a><a href="catering.html">Catering</a><a href="events.html">Private Events</a><a href="people.html">Our People</a><a href="gallery.html">Look Around</a></nav>
+    <a class="cta" href="order.html">Order online</a>
+  </header>
+
+  <main>
+        <section class="top" aria-labelledby="h1">
+      <div>
+        <p class="eyebrow">Location &amp; hours</p>
+        <h1>1175 Walnut Street.</h1>
+        <p class="status"><span class="dot" aria-hidden="true"></span>Open now <span class="muted">· closes at 9:00 pm</span></p>
+        <address>Boulder, Colorado 80302<br><a href="tel:+13034439468">(303) 443-9468</a></address>
+        <div class="btns"><a class="cta" href="https://maps.google.com/?q=T%2FACO+1175+Walnut+St+Boulder+CO">Get directions</a><a class="cta secondary" href="tel:+13034439468">Call us</a></div>
+      </div>
+      <div class="stand" aria-hidden="true"><div class="shadow"></div><div class="plate"></div></div>
+      <div class="hours">
+        <h2>Hours</h2>
+        <table>
+          <caption>Open seven days. Kitchen closes 30 minutes before close. Holiday hours are posted on the door and on Instagram.</caption>
+          <tbody>
+            <tr><th scope="row">Monday</th><td>11:00 am – 9:00 pm</td></tr>
+            <tr><th scope="row">Tuesday</th><td>11:00 am – 9:00 pm</td></tr>
+            <tr><th scope="row">Wednesday</th><td>11:00 am – 9:00 pm</td></tr>
+            <tr class="today"><th scope="row">Thursday <span class="muted">· today</span></th><td>11:00 am – 9:00 pm</td></tr>
+            <tr><th scope="row">Friday</th><td>11:00 am – 10:00 pm</td></tr>
+            <tr><th scope="row">Saturday</th><td>11:00 am – 10:00 pm</td></tr>
+            <tr><th scope="row">Sunday</th><td>11:00 am – 9:00 pm</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="door" aria-label="The room">
+      <div class="text">
+        <h2>When it’s warm, the door goes up.</h2>
+        <p>The whole front of the room opens onto Walnut Street. Patio tables are first come, first served.</p>
+        <p>Dogs are welcome on the patio. So are kids, bikes and that one friend who’s always late.</p>
+      </div>
+      <figure><img src="room-set.jpg" alt="The dining room with the garage door raised, brick columns and Walnut Street beyond"></figure>
+    </section>
+
+    <section class="facts" aria-label="Good to know">
+      <div><h3>Getting here.</h3><p><b>On foot</b> from Pearl Street, two blocks south on 12th.</p><p><b>Parking</b> at the 11th &amp; Walnut garage, half a block west, or metered on the street until 7 pm.</p><p><b>Bus</b> — HOP and SKIP both stop at Broadway &amp; Walnut.</p></div>
+      <div><h3>Reservations.</h3><p><b>Lunch</b> is first come, first served; no reservations.</p><p><b>Dinner</b> parties of six or more can call to reserve up to a month ahead. Everyone else, just walk in — the room turns fast.</p><p>Want the whole room? That’s a <a href="events.html" style="color:var(--ink)">private event</a>.</p></div>
+      <div><h3>Accessibility.</h3><p><b>Step-free</b> entrance from the sidewalk and a level floor throughout.</p><p><b>Restroom</b> is single-stall and accessible.</p><p>The room is loud at peak hours; the patio is quieter. Large-print menus on request, and this site works with screen readers.</p></div>
+    </section>
+
+    <section class="map" aria-label="Map">
+      <div class="frame">
+        <!-- build: <iframe title="Map of T/aco, 1175 Walnut Street, Boulder" loading="lazy" src="https://www.google.com/maps/embed/v1/place?key=KEY&q=T%2FACO+1175+Walnut+St+Boulder+CO&zoom=16"></iframe> -->
+        <img src="map-static.png" alt="Map showing T/aco at 1175 Walnut Street, Boulder, between 11th and 12th Streets">
+      </div>
+      <div class="pin">
+        <h3><svg class="slash" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>1175 Walnut Street</h3>
+        <p>Between 11th and 12th, on the south side. The brick corner with the chalkboard by the door, and the sails and string lights over the patio.</p>
+        <a class="cta" href="https://maps.google.com/?q=T%2FACO+1175+Walnut+St+Boulder+CO">Open in Google Maps</a>
+      </div>
+    </section>
+    <img class="note" src="hand-note.png" alt="" aria-hidden="true">
+  </main>
+</div>
+</body>
+</html>

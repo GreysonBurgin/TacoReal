@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Have a Look Around — T/aco</title>
+<style>
+  @font-face { font-family: "Sancreek"; src: url("Sancreek-Regular.ttf"); }
+  @font-face { font-family: "DM Sans"; src: url("DMSans.ttf"); font-weight: 100 900; }
+  :root { --surface:#fbf4e8; --surface-raised:#f3e8d5; --ink:#2b1a0e; --ink-muted:#7a4a1e; --action:#9e4c17; --on-action:#fbf4e8; --line:#e3d5be; --sage:#91ac7f; --display:"Sancreek",serif; --sans:"DM Sans",system-ui,sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background: var(--surface); color: var(--ink); font-family: var(--sans); }
+  .page { width: 1600px; }
+  header { background: var(--surface); height: 96px; display:flex; align-items:center; justify-content:space-between; padding: 0 64px; }
+  header img { height: 48px; }
+  nav { display:flex; gap: 40px; font-size: 17px; font-weight: 500; }
+  nav a { color: var(--ink); text-decoration: none; padding-bottom: 6px; }
+  nav a[aria-current] { border-bottom: 3px solid var(--action); }
+  .cta { background: var(--action); color: var(--on-action); padding: 14px 24px; font-weight: 500; text-decoration:none; }
+
+  figure { margin: 0; position: relative; }
+  figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .pair figure, .wide, .night, .out figure { overflow: hidden; }
+  figcaption { font-size: 15px; line-height: 1.5; color: var(--ink-muted); margin-top: 12px; }
+  figcaption b { font-family: var(--display); font-weight: 400; font-size: 20px; color: var(--ink); display: block; margin-bottom: 2px; }
+
+  /* 0. the title, on paper, small — the photos are the page */
+  .intro { padding: 72px 160px 56px; display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; }
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin: 0 0 16px; }
+  .intro h1 { font-family: var(--display); font-weight: 400; font-size: 56px; line-height: 1; margin: 0; }
+  .intro p { font-size: 18px; line-height: 1.55; color: var(--ink-muted); max-width: 40ch; margin: 0; }
+
+  /* 1. the sign: full bleed, the carved wall */
+  .sign { height: 520px; background: url("wood2x-carved.png") center 62% / cover no-repeat; position: relative; }
+  .sign::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.22); }
+  .sign figcaption { position: absolute; left: 160px; bottom: 40px; color: var(--surface); }
+  .sign figcaption b { color: var(--surface); }
+
+  /* 2. the morning: two tall frames with a slash-cut edge between them */
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0; height: 760px; overflow: hidden; }
+  .pair figure { height: 760px; }
+  .pair figure:first-child img { clip-path: polygon(0 0, 100% 0, calc(100% - 180px) 100%, 0 100%); }
+  .pair figure:last-child { margin-left: -180px; }
+  .pair figure:last-child img { clip-path: polygon(180px 0, 100% 0, 100% 100%, 0 100%); }
+  .pair figcaption { position: absolute; left: 48px; bottom: 32px; color: var(--surface); }
+  .pair figure:last-child figcaption { left: auto; right: 48px; text-align: right; }
+  .pair figcaption b { color: var(--surface); }
+
+  /* 3. paper: one small square photo, lots of air, a line of their voice */
+  .breath { padding: 96px 160px; display: grid; grid-template-columns: 420px 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; background: var(--surface); }
+  .breath figure { height: 420px; width: 420px; overflow: hidden; }
+  .breath blockquote { margin: 0; font-family: var(--display); font-size: 36px; line-height: 1.2; max-width: 16ch; }
+  .breath cite { display: block; font-family: var(--sans); font-style: normal; font-size: 13px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin-top: 20px; }
+
+  /* 4. the plate: wide, cropped tight */
+  .wide { height: 640px; }
+  .night { overflow: hidden; }
+  .wide figcaption { position: absolute; left: 160px; bottom: 40px; color: var(--surface); }
+  .wide figcaption b { color: var(--surface); }
+  .wide::after { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(20,12,6,0.55), transparent 40%); pointer-events:none; }
+
+  /* 5. the room: three across, different heights, captions below on paper */
+  .trio { padding: 80px 160px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; align-items: start; }
+  .trio figure:nth-child(1) { height: 520px; } .trio figure:nth-child(2) { height: 420px; margin-top: 100px; } .trio figure:nth-child(3) { height: 520px; }
+  .trio figure img { height: calc(100% - 60px); }
+
+  /* 6. the night: full bleed, the bar */
+  .night { height: 720px; }
+  .night figcaption { position: absolute; left: 160px; bottom: 48px; color: var(--surface); }
+  .night figcaption b { color: var(--surface); }
+  .night::after { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(20,12,6,0.6), transparent 45%); pointer-events:none; }
+
+  /* 6b. chalk: three boards, same height, on paper */
+  .chalk { padding: 96px 160px 96px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; align-items: start; }
+  .chalk figure { height: 640px; }
+  .chalk figure img { height: calc(100% - 60px); object-position: center 40%; }
+  .chalk figure:nth-child(2) img { object-position: center 30%; }
+
+  /* 7. the patio: off-centre, cut on the left, with the come-visit line */
+  .out { display: grid; grid-template-columns: 560px 1fr; height: 680px; }
+  .out .text { padding: 160px 0 0 160px; }
+  .out h2 { font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; margin: 0 0 16px; }
+  .out p { font-size: 18px; line-height: 1.55; color: var(--ink-muted); max-width: 32ch; margin: 0 0 28px; }
+  .out figure img { clip-path: polygon(220px 0, 100% 0, 100% 100%, 0 100%); }
+  .out figure::after { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(20,12,6,0.6), transparent 35%); clip-path: polygon(220px 0, 100% 0, 100% 100%, 0 100%); pointer-events:none; }
+  .out figcaption { z-index: 1; }
+  .out figcaption { position: absolute; right: 48px; bottom: 32px; text-align: right; color: var(--surface); }
+  .out figcaption b { color: var(--surface); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a href="index.html" aria-label="T/aco home"><img src="logo-rgba.png" alt="T/aco"></a>
+    <nav aria-label="Main"><a href="menu.html">Menu</a><a href="location.html">Location &amp; Hours</a><a href="catering.html">Catering</a><a href="events.html">Private Events</a><a href="people.html">Our People</a><a href="gallery.html" aria-current="page">Look Around</a></nav>
+    <a class="cta" href="order.html">Order online</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">Have a look around</p><h1>One room on Walnut Street.</h1></div>
+      <p>Everything here was shot in the restaurant, by us, on an ordinary day. Scroll in off the street.</p>
+    </section>
+
+    <figure class="sign">
+      <figcaption><b>The sign.</b> Burned into the patio planks the year we opened. It has faded with the boards.</figcaption>
+    </figure>
+
+    <section class="pair" aria-label="The kitchen in the morning">
+      <figure><img src="corn.jpg" alt="Nixtamalized corn kernels, wet and gold, before milling"><figcaption><b>6 a.m.</b> The corn, nixtamalized overnight, about to be milled.</figcaption></figure>
+      <figure><img src="plancha.jpg" alt="A cook lifts a fresh corn tortilla from the plancha"><figcaption><b>7 a.m.</b> Tortillas, pressed and cooked, one at a time.</figcaption></figure>
+    </section>
+
+    <section class="breath">
+      <figure><img src="salsas.jpg" alt="Five molcajete bowls of salsas and toppings from above"></figure>
+      <blockquote>Everything on the line is made the morning you eat it.<cite>The kitchen, every day</cite></blockquote>
+    </section>
+
+    <figure class="wide">
+      <img src="cilantro.jpg" alt="A cook's hand drops cilantro onto a tostada" style="object-position: center 40%;">
+      <figcaption><b>Noon.</b> Cilantro, last, by hand.</figcaption>
+    </figure>
+
+    <section class="trio" aria-label="The room">
+      <figure><img src="room-set.jpg" alt="The dining room set with white linens under the star lamps"><figcaption><b>The room.</b> Fourteen tables, one long one, the garage door up when it's warm.</figcaption></figure>
+      <figure><img src="ph-09.jpg" alt="Placeholder: a cook at the line"><figcaption><b>The line.</b> Placeholder — cook portrait, shot #9.</figcaption></figure>
+      <figure><img src="flatlay.jpg" alt="Four tacos on bamboo plates and two drinks on the patio deck"><figcaption><b>The order.</b> Four tacos, a marg, a michelada, the deck.</figcaption></figure>
+    </section>
+
+    <section class="pair" aria-label="The people">
+      <figure><img src="ph-13.jpg" alt="Placeholder: Peter at the door"><figcaption><b>The door.</b> Placeholder — Peter greeting, shot #13.</figcaption></figure>
+      <figure><img src="ph-25.jpg" alt="Placeholder: the kitchen crew together"><figcaption><b>The crew.</b> Placeholder — kitchen together, shot #25.</figcaption></figure>
+    </section>
+
+    <figure class="night">
+      <img src="bar.jpg" alt="The bar at night under the Moravian star lamps, bartender at work, guests along the counter">
+      <figcaption><b>9 p.m.</b> The bar under the star lamps. It gets loud. That's the room doing its job.</figcaption>
+    </figure>
+
+    <section class="chalk" aria-label="Written in chalk">
+      <figure><img src="board-famous.jpg" alt="A chalkboard by the door: T/aco, since 2012, famous for something — tacos, burritos, margs, salsas, queso, churros — we'll let you decide"><figcaption><b>The board by the door.</b> Famous for something. We’ll let you decide.</figcaption></figure>
+      <figure><img src="board-record.jpg" alt="A framed chalkboard on the brick wall reading new taco record, 51 in one hour"><figcaption><b>The record.</b> Fifty-one tacos in one hour. The kitchen keeps score.</figcaption></figure>
+      <figure><img src="board-margs.jpg" alt="A chalkboard reading margs on the run, one liter, authentic, fresh, beloved, take one home today"><figcaption><b>Margs on the run.</b> A litre to go. Authentic, fresh, beloved — their words, in chalk.</figcaption></figure>
+    </section>
+
+    <section class="out">
+      <div class="text">
+        <h2>Come have a look for yourself.</h2>
+        <p>1175 Walnut Street, Boulder. Open every day from eleven.</p>
+        <a class="cta" href="location.html">Location &amp; hours</a>
+      </div>
+      <figure><img src="patio-night.jpg" alt="The empty patio at night: orange chairs, wooden tables, red and teal sails and string lights overhead" style="object-position: 60% 50%;"><figcaption><b>The patio, after close.</b> Where we started this page.</figcaption></figure>
+    </section>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Catering — T/aco</title>
+<style>
+  @font-face { font-family: "Sancreek"; src: url("Sancreek-Regular.ttf"); }
+  @font-face { font-family: "DM Sans"; src: url("DMSans.ttf"); font-weight: 100 900; }
+  :root { --surface:#fbf4e8; --surface-raised:#f3e8d5; --ink:#2b1a0e; --ink-muted:#7a4a1e; --action:#9e4c17; --on-action:#fbf4e8; --focus:#3f6b36; --line:#e3d5be; --sage:#91ac7f; --display:"Sancreek",serif; --sans:"DM Sans",system-ui,sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background: var(--surface); color: var(--ink); font-family: var(--sans); }
+  .page { width: 1600px; }
+  header { background: var(--surface); height: 96px; display:flex; align-items:center; justify-content:space-between; padding: 0 64px; }
+  header img { height: 48px; }
+  nav { display:flex; gap: 40px; font-size: 17px; font-weight: 500; }
+  nav a { color: var(--ink); text-decoration: none; padding-bottom: 6px; }
+  nav a[aria-current] { border-bottom: 3px solid var(--action); }
+  .cta { background: var(--action); color: var(--on-action); padding: 14px 24px; font-weight: 500; text-decoration:none; display:inline-block; border: 2px solid var(--action); }
+  .cta.secondary { background: transparent; color: var(--ink); border-color: var(--ink-muted); }
+
+  /* 1. opener: the loop runs behind a sheet with the line and one ask */
+  .open { position: relative; height: 680px; overflow: hidden; }
+  .open .film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .open::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.40); }
+  .open .sheet { position: absolute; left: 160px; top: 110px; width: 640px; background: var(--surface); padding: 56px 64px 60px; }
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin: 0 0 16px; }
+  h1 { font-family: var(--display); font-weight: 400; font-size: 56px; line-height: 1; margin: 0 0 18px; }
+  .open p { font-size: 18px; line-height: 1.55; margin: 0 0 28px; max-width: 46ch; }
+
+  /* 2. three ways, as rows */
+  .ways { padding: 96px 160px 80px; }
+  .ways h2 { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 0 0 8px; }
+  .ways .sub { font-size: 18px; color: var(--ink-muted); margin: 0 0 40px; max-width: 60ch; }
+  .way { display: grid; grid-template-columns: 300px 1fr 220px; gap: 40px; padding: 32px 0; border-top: 1px solid var(--line); align-items: start; }
+  .way:last-child { border-bottom: 1px solid var(--line); }
+  .way h3 { font-family: var(--display); font-weight: 400; font-size: 26px; margin: 0 0 6px; }
+  .way .for { font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .way p { font-size: 18px; line-height: 1.55; margin: 0; max-width: 56ch; }
+  .way .price { text-align: right; font-size: 18px; line-height: 1.5; }
+  .way .price b { font-family: var(--display); font-weight: 400; font-size: 30px; display: block; }
+  .way .price span { color: var(--ink-muted); font-size: 15px; }
+
+  /* 3. the menu, split: photo cut on the left, list on the right */
+  .menu { display: grid; grid-template-columns: 1fr 1fr; height: 720px; }
+  .menu figure { margin: 0; overflow: hidden; }
+  .menu img { width: 100%; height: 100%; object-fit: cover; display: block; clip-path: polygon(0 0, 100% 0, calc(100% - 200px) 100%, 0 100%); }
+  .menu .list { padding: 88px 160px 80px 40px; }
+  .menu h2 { font-family: var(--display); font-weight: 400; font-size: 36px; margin: 0 0 8px; }
+  .menu .sub { font-size: 17px; color: var(--ink-muted); margin: 0 0 28px; }
+  .menu dl { margin: 0; }
+  .menu dt { font-family: var(--display); font-size: 21px; margin: 18px 0 4px; }
+  .menu dt:first-child { margin-top: 0; }
+  .menu dd { margin: 0; font-size: 17px; line-height: 1.5; color: var(--ink-muted); padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+
+  /* 4. the ask: a short accessible form on raised paper */
+  .ask { background: var(--surface-raised); padding: 96px 160px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .ask h2 { font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.05; margin: 0 0 16px; }
+  .ask p { font-size: 18px; line-height: 1.55; margin: 0 0 16px; max-width: 46ch; }
+  .ask p.small { font-size: 15px; color: var(--ink-muted); }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field.wide { grid-column: 1 / -1; }
+  label { font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+  label .req { color: var(--action); }
+  input, select, textarea { font: inherit; font-size: 17px; padding: 14px 16px; border: 1.5px solid var(--ink-muted); background: var(--surface); color: var(--ink); border-radius: 0; }
+  textarea { min-height: 120px; resize: vertical; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .hint { font-size: 14px; color: var(--ink-muted); }
+  .err { font-size: 14px; color: var(--action); display: flex; gap: 6px; align-items: center; }
+  .field.invalid input { border-color: var(--action); border-width: 2px; }
+  form .submit { grid-column: 1 / -1; display: flex; align-items: center; gap: 20px; margin-top: 8px; }
+  form button { font: inherit; font-size: 17px; font-weight: 500; padding: 16px 28px; background: var(--action); color: var(--on-action); border: 2px solid var(--action); cursor: pointer; }
+  form button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .or { font-size: 16px; color: var(--ink-muted); }
+  .or a { color: var(--ink); }
+
+  /* 5. close */
+  .close { padding: 88px 160px; display: flex; align-items: center; justify-content: space-between; gap: 48px; border-top: 1px solid var(--line); }
+  .close h2 { font-family: var(--display); font-weight: 400; font-size: 32px; margin: 0 0 8px; }
+  .close p { font-size: 18px; color: var(--ink-muted); margin: 0; }
+  .slash { height: 56px; }
+  .slash .offset { fill: var(--sage); } .slash .face { fill: var(--ink); stroke: var(--surface); stroke-width: 3; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a href="index.html" aria-label="T/aco home"><img src="logo-rgba.png" alt="T/aco"></a>
+    <nav aria-label="Main"><a href="menu.html">Menu</a><a href="location.html">Location &amp; Hours</a><a href="catering.html" aria-current="page">Catering</a><a href="events.html">Private Events</a><a href="people.html">Our People</a><a href="gallery.html">Look Around</a></nav>
+    <a class="cta" href="order.html">Order online</a>
+  </header>
+
+  <main>
+    <section class="open" aria-labelledby="h1">
+      <video class="film" autoplay muted loop playsinline poster="flatlay.jpg" aria-hidden="true"><source src="catering-loop-15s.mp4" type="video/mp4"></video>
+      <div class="sheet">
+        <p class="eyebrow">Catering</p>
+        <h1>Tacos to the people.</h1>
+        <p>We bring the T/aco experience to you: the same tortillas, salsas and guacamole, made the morning of your event. Pick it up, have it dropped off, or let us run the whole thing.</p>
+        <a class="cta" href="#plan">Plan an order</a>
+      </div>
+    </section>
+
+    <section class="ways" aria-labelledby="w">
+      <h2 id="w">Three ways to do it.</h2>
+      <p class="sub">Every one of them comes with house tortillas, chips, two salsas and guacamole. Pick by how much you want to carry.</p>
+      <div class="way">
+        <div><h3>Pick-up taco bar</h3><span class="for">From 10 guests</span></div>
+        <p>Everything packed hot in foil pans with tongs, plates and napkins, ready at the counter at the time you choose. You set it out. The easiest version of us.</p>
+        <div class="price"><b>$16</b>per guest<br><span>24 hours’ notice</span></div>
+      </div>
+      <div class="way">
+        <div><h3>Drop-off, set up and served</h3><span class="for">From 20 guests</span></div>
+        <p>We deliver, set the taco bar with chafers and signage, serve for the first hour so nobody has to figure out the salsa order, and clear it when we go.</p>
+        <div class="price"><b>$24</b>per guest<br><span>48 hours’ notice · Boulder County</span></div>
+      </div>
+      <div class="way">
+        <div><h3>Full service with the bar</h3><span class="for">20 to 200 guests</span></div>
+        <p>Cooks on the plancha making tortillas to order, a bartender with house margaritas, and a lead who runs the night. The restaurant, somewhere else.</p>
+        <div class="price"><b>From $48</b>per guest<br><span>Quoted per event</span></div>
+      </div>
+    </section>
+
+    <section class="menu" aria-labelledby="m">
+      <figure><img src="salsas.jpg" alt="Five bowls of salsas and toppings from above: pickled onion, cilantro, pineapple, pico, cotija"></figure>
+      <div class="list">
+        <h2 id="m">What’s on the bar.</h2>
+        <p class="sub">Choose three fillings for the taco bar; add more for $3 a guest each.</p>
+        <dl>
+          <dt>Fillings</dt><dd>Barbacoa · carnitas · chorizo · grilled cotija · beandito (vegan) · buffalo chicken · BBQ pork</dd>
+          <dt>Always included</dt><dd>House corn tortillas, chips, roasted salsa verde, salsa fresca, guacamole, pickled onions, cilantro, limes</dd>
+          <dt>Add-ons</dt><dd>Rice and black beans $3 · queso $3 · ceviche $5 · churros $4 · agua fresca by the gallon $28</dd>
+          <dt>Bar</dt><dd>House margaritas, Modelo and Pacifico, aguas frescas and Jarritos. Full service only; we bring the license.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="ask" id="plan" aria-labelledby="a">
+      <div>
+        <h2 id="a">Tell us about it.</h2>
+        <p>Date, headcount and where. We reply the same day with a menu and a price, and we hold your date for 48 hours while you decide.</p>
+        <p class="small">Weddings, offices, the fraternity, a Tuesday. If it is more than 200 people, call and we will talk it through.</p>
+      </div>
+      <form novalidate>
+        <div class="field"><label for="name">Your name <span class="req" aria-hidden="true">*</span></label><input id="name" name="name" type="text" required autocomplete="name"></div>
+        <div class="field"><label for="email">Email <span class="req" aria-hidden="true">*</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field invalid"><label for="date">Date <span class="req" aria-hidden="true">*</span></label><input id="date" name="date" type="date" required aria-describedby="date-err" aria-invalid="true"><span class="err" id="date-err">Pick a date at least 24 hours from now.</span></div>
+        <div class="field"><label for="guests">Guests <span class="req" aria-hidden="true">*</span></label><input id="guests" name="guests" type="number" min="10" max="200" required aria-describedby="guests-hint" value="40"><span class="hint" id="guests-hint">Between 10 and 200.</span></div>
+        <div class="field"><label for="how">How</label><select id="how" name="how"><option>Pick-up taco bar</option><option selected>Drop-off, set up and served</option><option>Full service with the bar</option><option>Not sure yet</option></select></div>
+        <div class="field"><label for="where">Where</label><input id="where" name="where" type="text" placeholder="Address or “the office on Pearl”" autocomplete="street-address"></div>
+        <div class="field wide"><label for="notes">Anything else</label><textarea id="notes" name="notes" aria-describedby="notes-hint"></textarea><span class="hint" id="notes-hint">Allergies, a birthday, no cilantro, the works.</span></div>
+        <div class="submit"><button type="submit">Send it</button><span class="or">or call <a href="tel:+13034439468">(303) 443-9468</a></span></div>
+      </form>
+    </section>
+
+    <section class="close">
+      <div><h2>Want the room instead?</h2><p>Have the place to yourself for up to 90.</p></div>
+      <svg class="slash" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+      <a class="cta secondary" href="events.html">Private events</a>
+    </section>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Our People — T/aco</title>
+<style>
+  @font-face { font-family: "Sancreek"; src: url("Sancreek-Regular.ttf"); }
+  @font-face { font-family: "DM Sans"; src: url("DMSans.ttf"); font-weight: 100 900; }
+  :root {
+    --surface:#fbf4e8; --surface-raised:#f3e8d5; --ink:#2b1a0e; --ink-muted:#7a4a1e; --action:#9e4c17; --on-action:#fbf4e8;
+    --focus:#3f6b36; --line:#e3d5be; --brand-sage:#91ac7f;
+    --display:"Sancreek", serif; --sans:"DM Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background: var(--surface); color: var(--ink); font-family: var(--sans); }
+  .page { width: 1600px; }
+
+  header { background: var(--surface); height: 96px; display:flex; align-items:center; justify-content:space-between; padding: 0 64px; }
+  header img { height: 48px; }
+  nav { display:flex; gap: 40px; font-size: 17px; font-weight: 500; }
+  nav a { color: var(--ink); text-decoration: none; padding-bottom: 6px; }
+  nav a[aria-current] { border-bottom: 3px solid var(--action); }
+  .cta { background: var(--action); color: var(--on-action); padding: 14px 24px; font-weight: 500; text-decoration:none; }
+
+  /* 1. opening: the two boards that flank the front door, and the words between them are the door */
+  .open { position: relative; height: 960px; background: var(--surface); display: grid; grid-template-columns: 1fr 760px 1fr; align-items: center; padding: 0 120px; }
+  .open .board { height: 760px; justify-self: center; }
+  .open-text { text-align: center; padding-bottom: 40px; }
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; margin: 0 0 20px; color: var(--ink-muted); }
+  .open h1 { font-family: var(--sans); font-weight: 400; font-size: 34px; line-height: 1.35; margin: 0 auto 40px; max-width: 620px; color: var(--ink); }
+  .open h1 em { font-family: var(--display); font-style: normal; font-size: 40px; line-height: 1; }
+  .beats { font-family: var(--display); font-size: 22px; line-height: 1; color: var(--ink-muted); margin: 0; display: flex; justify-content: center; gap: 36px; }
+
+  /* 2. paper */
+  .paper { padding: 96px 160px; }
+  .col { max-width: 760px; }
+  .lede { font-family: var(--display); font-size: 24px; line-height: 1.4; color: var(--ink-muted); margin: 0 0 48px; }
+  h2 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.1; margin: 0 0 16px; }
+  p  { font-size: 18px; line-height: 1.55; margin: 0 0 20px; max-width: 64ch; }
+  .sheet .record { float: right; height: 300px; margin: -24px -24px 24px 40px; }
+  dl { display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 0 0 48px; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); max-width: 760px; }
+  dt { font-family: var(--display); font-size: 40px; line-height: 1; }
+  dd { margin: 8px 0 0; font-size: 16px; color: var(--ink-muted); }
+  .divider { display:flex; justify-content:center; margin: 56px 0; }
+  .divider svg { height: 48px; }
+  .divider .offset { fill: var(--brand-sage); } .divider .face { fill: var(--ink); stroke: var(--surface); stroke-width:3; }
+
+  /* 3. the uncovering: the bar appears behind a sheet as you scroll into it */
+  .uncover { position: relative; background: url("bar.jpg") center / cover no-repeat; padding: 120px 0; margin-top: 0; }
+  .uncover::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.62); }
+  .sheet { position: relative; width: 920px; margin: 0 auto; background: var(--surface); padding: 72px 96px 80px; }
+  figure { margin: 40px 0 0; }
+  figure img { width: 100%; display: block; }
+  figcaption { font-size: 16px; line-height: 1.5; color: var(--ink-muted); margin-top: 12px; }
+
+  /* 4. back on paper */
+  .gift { background: var(--surface-raised); padding: 32px; }
+  .gift p:last-child { margin: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a href="index.html" aria-label="T/aco home"><img src="logo-rgba.png" alt="T/aco"></a>
+    <nav aria-label="Main">
+      <a href="menu.html">Menu</a><a href="location.html">Location &amp; Hours</a><a href="catering.html">Catering</a><a href="events.html">Private Events</a><a href="people.html" aria-current="page">Our People</a><a href="gallery.html">Look Around</a>
+    </nav>
+    <a class="cta" href="events.html">Reserve a table</a>
+  </header>
+
+  <main>
+    <section class="open" aria-labelledby="t">
+      <img class="board" src="board-famous-obj.png" alt="The chalkboard left of our door: T·ACO, since 2012. Famous for something — tacos, burritos, margs, salsas, queso, churros. We’ll let you decide!">
+      <div class="open-text">
+        <p class="eyebrow">Our people</p>
+        <h1 id="t"><em>Highest staff retention</em> of any restaurant in Boulder. Here is who you are eating with.</h1>
+        <p class="beats"><span>One room.</span><span>Fourteen years.</span><span>The same hands.</span></p>
+      </div>
+      <img class="board" src="board-margs-obj.png" alt="The chalkboard right of our door: Margs on the run, one liter, six 12-oz servings. House $50, Coin $55, Flavored $60. Authentic, fresh, beloved. Take one home today.">
+    </section>
+
+    <section class="uncover" aria-labelledby="k">
+      <article class="sheet">
+        <img class="record" src="board-record-obj.png" alt="The board on the brick wall: T·ACO specials. New taco record!!! In one hour: 51.">
+        <dl>
+          <div><dt>2012</dt><dd>the year we opened at 1175 Walnut</dd></div>
+          <div><dt>1 in 4</dt><dd>of our kitchen has been here since day one</dd></div>
+          <div><dt>5+ yrs</dt><dd>for most of the front of house</dd></div>
+        </dl>
+
+        <h2>Peter Waters, managing partner</h2>
+        <p>Peter has been here since the first day of service. He still works the door most nights, greets regulars by name, and makes the margaritas when the bar backs up. His rule for the place is simple: put yourself in the guest's shoes, then ask what you would want.</p>
+        <p>He is also the one who calls it “the world's largest tiny restaurant,” which is the truest thing anyone has said about the room.</p>
+        <figure>
+          <img src="family.jpg" alt="A father and his young daughter sit at the patio table, the carved T/aco sign on the plank wall above them">
+          <figcaption>The patio wall on Walnut Street. The sign has been there as long as we have.</figcaption>
+        </figure>
+
+        <div class="divider" aria-hidden="true">
+          <svg viewBox="-4 -4 108 166"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+        </div>
+
+        <h2 id="k">The kitchen</h2>
+        <p>Our tortillas have been made in house since 2015 by a kitchen crew largely from Zacatecas, Mexico. They mill the organic corn every morning into the masa that becomes every tortilla, chip and tostada we serve. Several of them have been in this kitchen longer than most Boulder restaurants have been open.</p>
+        <figure>
+          <img src="plancha.jpg" alt="A cook lifts a fresh corn tortilla from the hot plancha">
+          <figcaption>Fresh masa, pressed and cooked to order, every day since 2015.</figcaption>
+        </figure>
+
+        <div class="divider" aria-hidden="true">
+          <svg viewBox="-4 -4 108 166"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>
+        </div>
+
+        <section class="gift">
+          <h2>The gift card program</h2>
+          <p>Every dollar from gift card sales goes to the kitchen staff and their families. Nearly all of it is bought in December. If you want to thank the people who made your taco, this is the way.</p>
+        </section>
+      </article>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
