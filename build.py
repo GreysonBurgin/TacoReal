@@ -14,7 +14,8 @@ src/data/       site.json and menu.json: every fact that appears in more than on
 src/static/     images, fonts, video; copied as they are
 src/editor/     the owner's editor
 """
-import hashlib, http.server, json, os, re, shutil, sys
+import hashlib, html, http.server, json, os, re, shutil, sys
+from urllib.parse import urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC, DIST = os.path.join(ROOT, 'src'), os.path.join(ROOT, 'dist')
@@ -58,13 +59,110 @@ def size_images(html):
 
 def esc(s): return str(s).replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;')
 
+# ---- the facts, written into the HTML at build time. site.js and the menu script do the same in the browser when the
+# ---- owner's sheet has newer facts; these two must stay in step (tests/check.py compares them).
+SHORT = {'Sunday': 'Sun', 'Monday': 'Mon', 'Tuesday': 'Tue', 'Wednesday': 'Wed', 'Thursday': 'Thu', 'Friday': 'Fri', 'Saturday': 'Sat'}
+
+def mins(t):
+    m = re.match(r'^(\d{1,2}):(\d{2})$', str(t or '').strip())
+    return int(m.group(1)) * 60 + int(m.group(2)) if m else None
+
+def clock(m, ampm=False):
+    h, mm = (m // 60) % 24, m % 60; h12 = h % 12 or 12
+    return str(h12) + (':%02d' % mm if mm else '') + ((' am' if h < 12 else ' pm') if ampm else '')
+
+def hour_groups(site):
+    """Consecutive days with the same hours become one line. None if the week is not seven usable days."""
+    week = []
+    for r in (site.get('hours') or [])[:7]:
+        o, c = mins(r.get('open')), mins(r.get('close'))
+        week.append({'day': r['day'], 'closed': bool(r.get('closed')) or o is None or c is None, 'o': o, 'c': c})
+    if len(week) != 7: return None
+    out = []
+    for d in week:
+        k = 'x' if d['closed'] else '%s-%s' % (d['o'], d['c'])
+        if out and out[-1]['k'] == k: out[-1]['to'] = d['day']
+        else: out.append({'k': k, 'from': d['day'], 'to': d['day'], 'd': d})
+    return out
+
+def place_facts(page_html, site):
+    """Address, phone, links and hours from site.json, wherever the markup asks for them (data-f, data-link, data-hours)."""
+    info, links = site.get('info', {}), site.get('links', {})
+    tel = 'tel:+1' + re.sub(r'\D', '', str(info.get('phone', '')))
+    out = re.sub(r'href="tel:[^"]*"', 'href="%s"' % tel, page_html)
+    for key, value in (('phone', info.get('phone')), ('street', info.get('street')), ('city', info.get('city')), ('street-h', (info.get('streetShort') or '') + '.')):
+        if value: out = re.sub(r'(<[^>]*data-f="%s"[^>]*>)[^<]*' % key, lambda m: m.group(1) + esc(value), out)
+    def link(m): return m.group(1) + esc(links[m.group(2)]) + m.group(3) if links.get(m.group(2)) else m.group(0)
+    out = re.sub(r'(<a\b[^>]*data-link="([\w-]+)"[^>]*?href=")[^"]*(")', link, out)
+    g = hour_groups(site)
+    if g:
+        every = len(g) == 1
+        short = ''.join('<p>%s · %s</p>' % ('Daily' if every else (SHORT[x['from']] if x['from'] == x['to'] else SHORT[x['from']] + '–' + SHORT[x['to']]),
+                        'Closed' if x['d']['closed'] else clock(x['d']['o']) + '–' + clock(x['d']['c'])) for x in g)
+        out = re.sub(r'(<div data-hours="short">).*?(</div>)', lambda m: m.group(1) + short + m.group(2), out, flags=re.S)
+        long = '\n        '.join('<div data-day-group><dt>%s</dt><dd>%s</dd></div>' % ('Every day' if every else (x['from'] if x['from'] == x['to'] else x['from'] + ' – ' + x['to']),
+                        'Closed' if x['d']['closed'] else clock(x['d']['o'], True) + ' – ' + clock(x['d']['c'], True)) for x in g)
+        first = [True]
+        def group(m):
+            if first[0]: first[0] = False; return long
+            return ''
+        out = re.sub(r'<div data-day-group>.*?</div>(?:\n\s*(?=<div data-day-group>))?', group, out, flags=re.S)
+    return out
+
+def money(n): return '$%.2f' % n
+
+def head_price(p):
+    d = int(p); c = int(round((p - d) * 100))
+    return '<span class="pr">$%d%s</span>' % (d, '<sup>%02d</sup>' % c if c else '')
+
+def mesc(s): return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+SLASH = '<svg class="sl" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg>'
+
+def menu_html(menu, checked):
+    """The menu as HTML, so the page shows it before (or without) any script. The script in menu.html draws the same thing."""
+    jump, out = [], ''
+    for g in menu.get('groups', []):
+        if g.get('nav'): jump.append('<a href="#%s">%s</a>' % (g['id'], mesc(g['nav'])))
+        price = g.get('price')
+        out += '<section class="grp" id="%s" aria-labelledby="h-%s"><h2 id="h-%s"%s>%s%s</h2><ul class="items%s">' % (
+            g['id'], g['id'], g['id'], ' aria-label="%s, %s each"' % (mesc(g['name']), money(price)) if price else '',
+            head_price(price) if price else '', mesc(g['name']), ' compact' if g.get('compact') else '')
+        for it in g.get('items', []):
+            p = it.get('price') or price; own = (not price) or p != price
+            tags = list(it.get('tags') or []) + (['Sold out today'] if it.get('soldOut') else [])
+            out += '<li class="it%s%s"><h3>%s%s</h3>%s%s</li>' % (
+                ' solo' if it.get('solo') else '', ' out' if it.get('soldOut') else '', mesc(it['name']),
+                '<span class="p">%s%s</span>' % ('from ' if it.get('from') else '', money(p)) if own else '',
+                '<p class="ds">%s</p>' % mesc(it['desc']) if it.get('desc') else '',
+                '<p class="tg">%s</p>' % ' · '.join(mesc(t) for t in tags) if tags else '')
+        out += '</ul>%s</section>' % ('<p class="barnote">%s</p>' % mesc(g['note']) if g.get('note') else '')
+    out += ('<div class="orn" aria-hidden="true"><i></i></div><p class="fine">All dishes may come into contact with allergens even if not listed as primary ingredients. Please ask us for more information.</p>'
+            + ('<p class="fine">Prices last checked %s. Today’s prices and what’s sold out are on Toast.</p>' % mesc(checked) if checked else ''))
+    return out, SLASH.join(jump)
+
+def size_data_images(page_html):
+    """Pictures a script adds later (data-imgs) carry their width and height too."""
+    def fix(m):
+        try: imgs = json.loads(html.unescape(m.group(1)))
+        except ValueError: return m.group(0)
+        for im in imgs:
+            path = os.path.join(SRC, 'static', im[0]); wh = image_size(path) if os.path.exists(path) else None
+            if wh and len(im) == 2: im.extend(wh)
+        return 'data-imgs="%s"' % html.escape(json.dumps(imgs, ensure_ascii=False), quote=True)
+    return re.sub(r'data-imgs="([^"]*)"', fix, page_html)
+
+def absolute_links(page_html, base_path):
+    """The not-found page is served at whatever address was asked for, so its links and files must not be relative."""
+    return re.sub(r'\b(href|src)="(?!https?:|#|tel:|mailto:|data:|/)([^"]+)"', lambda m: '%s="%s%s"' % (m.group(1), base_path, m.group(2)), page_html)
+
 def head_tags(site, page, meta, share):
     """Description, address, share card, icons, and the restaurant's facts in the form search engines read. All from site.json."""
     conf, info = site.get('site', {}), site['info']; base = conf.get('url', '').rstrip('/') + '/'
     here = base + ('' if page == 'index' else page + '.html'); title, d = meta.get('title', 'T/aco'), meta.get('description', '')
     t = ['<meta name="description" content="%s">' % esc(d)] if d else []
     if conf.get('concept') or page == '404': t.append('<meta name="robots" content="noindex, nofollow">')
-    else: t.append('<link rel="canonical" href="%s">' % esc(here))
+    if page != '404': t.append('<link rel="canonical" href="%s">' % esc(here))
     t += ['<meta property="og:type" content="website">', '<meta property="og:site_name" content="%s">' % esc(info.get('name', 'T/aco')),
           '<meta property="og:title" content="%s">' % esc(title), '<meta property="og:description" content="%s">' % esc(d), '<meta property="og:url" content="%s">' % esc(here)]
     if share: t += ['<meta property="og:image" content="%s%s">' % (esc(base), share), '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">', '<meta name="twitter:card" content="summary_large_image">']
@@ -75,17 +173,21 @@ def head_tags(site, page, meta, share):
               'menu': base + 'menu.html', 'acceptsReservations': site['links'].get('reservations', ''),
               'openingHoursSpecification': [{'@type': 'OpeningHoursSpecification', 'dayOfWeek': h['day'], 'opens': h['open'], 'closes': h['close']} for h in site['hours'] if not h.get('closed')]}
         if share: ld['image'] = base + share
-        t.append('<script type="application/ld+json">%s</script>' % json.dumps(ld, ensure_ascii=False).replace('</', '<\\/'))
+        t.append('<script type="application/ld+json" id="ld">%s</script>' % json.dumps(ld, ensure_ascii=False).replace('</', '<\\/'))
     return t
 
 def build():
     os.makedirs(DIST, exist_ok=True)
-    for old in os.listdir(DIST):                      # start clean; skip quietly where deleting is not allowed
-        try: os.remove(os.path.join(DIST, old))
-        except OSError: pass
+    left = []
+    for old in os.listdir(DIST):                      # start clean, folders included
+        path = os.path.join(DIST, old)
+        try: shutil.rmtree(path) if os.path.isdir(path) and not os.path.islink(path) else os.remove(path)
+        except OSError: left.append(old)
     for folder in ('static', 'editor'):
         for f in sorted(os.listdir(os.path.join(SRC, folder))):
-            if not f.startswith('.'): shutil.copyfile(os.path.join(SRC, folder, f), os.path.join(DIST, f))
+            if f.startswith('.'): continue
+            if folder == 'editor' and f.endswith('.html'): write(f, size_images(read(folder, f)))
+            else: shutil.copyfile(os.path.join(SRC, folder, f), os.path.join(DIST, f))
 
     site = json.loads(read('data', 'site.json')); menu = json.loads(read('data', 'menu.json'))
     url = {
@@ -97,6 +199,9 @@ def build():
 
     conf = site.get('site', {}); share = 'share.jpg' if os.path.exists(os.path.join(SRC, 'static', 'share.jpg')) else ''
     frame, header, footer = read('partials', 'page.html'), read('partials', 'header.html').strip(), read('partials', 'footer.html').strip()
+    base_path = urlparse(conf.get('url', '')).path or '/'
+    if not base_path.endswith('/'): base_path += '/'
+    menu_body, menu_jump = menu_html(menu, site.get('pricesChecked'))
     pages = sorted(f[:-5] for f in os.listdir(os.path.join(SRC, 'pages')) if f.endswith('.html'))
     for page in pages:
         meta, main, own = front(read('pages', page + '.html'))
@@ -119,13 +224,18 @@ def build():
                      ('header', h), ('main', main), ('footer', f), ('scripts', '\n'.join(scripts))):
             out = out.replace('{{%s}}' % k, v)
         if not page_css: out = out.replace('<link rel="stylesheet" href="">\n', '')
-        out = size_images(re.sub(r'\n{3,}', '\n\n', out))
+        out = out.replace('{{menu.html}}', menu_body).replace('{{menu.jump}}', menu_jump)
+        out = size_data_images(size_images(place_facts(re.sub(r'\n{3,}', '\n\n', out), site)))
+        if page == '404': out = absolute_links(out, base_path)
         write(file, out)
     live = [p for p in pages if p != '404']; base = conf.get('url', '').rstrip('/') + '/'
     open_to_search = not conf.get('concept')
     write('robots.txt', 'User-agent: *\n' + ('Allow: /\nSitemap: %ssitemap.xml\n' % base if open_to_search else 'Disallow: /\n'))
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + ''.join('  <url><loc>%s%s</loc></url>\n' % (base, '' if p == 'index' else p + '.html') for p in live) + '</urlset>\n')
+    stale = [f for f in left if not os.path.exists(os.path.join(SRC, 'static', f)) and not os.path.exists(os.path.join(SRC, 'editor', f))
+             and f not in url and f not in ('robots.txt', 'sitemap.xml') and not f.startswith('page-') and f[:-5] not in pages]
+    if stale: sys.exit('Old files could not be removed from dist/ and would be published: %s. Delete the dist folder and build again.' % ', '.join(stale))
     return pages
 
 def newest():
@@ -135,11 +245,19 @@ if __name__ == '__main__':
     pages = build(); print('Built %d pages into dist/' % len(pages))
     if '--serve' in sys.argv:
         port = 8080; built = [newest()]
+        BASE = urlparse(json.loads(read('data', 'site.json')).get('site', {}).get('url', '')).path or '/'
+        if not BASE.endswith('/'): BASE += '/'
         class H(http.server.SimpleHTTPRequestHandler):
             def __init__(self, *a, **k): super().__init__(*a, directory=DIST, **k)
             def do_GET(self):
                 if newest() > built[0]: build(); built[0] = newest()
+                if BASE != '/' and self.path.startswith(BASE): self.path = '/' + self.path[len(BASE):]   # the site's own address, e.g. /TacoReal/
                 super().do_GET()
+            def send_error(self, code, message=None, explain=None):
+                page = os.path.join(DIST, '404.html')
+                if code != 404 or not os.path.exists(page): return super().send_error(code, message, explain)
+                body = open(page, 'rb').read()
+                self.send_response(404); self.send_header('Content-Type', 'text/html; charset=utf-8'); self.send_header('Content-Length', str(len(body))); self.end_headers(); self.wfile.write(body)
             def log_message(self, *a): pass
         print('Serving http://localhost:%d  (Ctrl-C to stop). Source changes rebuild on the next page load.' % port)
         http.server.ThreadingHTTPServer(('', port), H).serve_forever()

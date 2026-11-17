@@ -16,7 +16,7 @@
         <a class="w" id="l2" data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc"><b role="heading" aria-level="2">We drop it off.</b><span>$22 a guest</span><i>Request drop-off ↗</i></a>
         <a class="w" id="l3" data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc"><b role="heading" aria-level="2">We take care of everything.</b><span>$25 a guest</span><i>Request full service ↗</i></a>
         <button class="cue" id="cue" type="button"><svg viewBox="-4 -4 108 166" aria-hidden="true"><polygon points="70,0 91,0 21,152 0,152"/></svg>Three ways to do it</button>
-        <button class="pause" id="pz" type="button" aria-pressed="false">Pause film</button>
+        <button class="pause" id="pz" type="button">Pause film</button>
       </section>
     </div>
     <section class="comes" aria-label="What comes with every order">
@@ -42,7 +42,8 @@
 (function(){
   var H=document.documentElement, v=document.getElementById('v'), pz=document.getElementById('pz');
   var calm=matchMedia('(prefers-reduced-motion: reduce)').matches||H.classList.contains('m');
-  function setv(on){ if(on){v.play();}else{v.pause();} pz.textContent=on?'Pause film':'Play film'; pz.setAttribute('aria-pressed', String(!on)); }
+  function label(on){ pz.textContent=on?'Pause film':'Play film'; }
+  function setv(on){ label(on); if(!on){ v.pause(); return; } var p=v.play(); if(p&&p.catch) p.catch(function(){ label(false); }); }   // if the browser refuses to play, the button says Play
   setv(!calm); pz.addEventListener('click', function(){ setv(v.paused); });
   var stage=document.getElementById('stage'), pin=document.getElementById('pin'), hdr=document.querySelector('header'), title=document.getElementById('title');
   var W=[1,2,3].map(function(i){return document.getElementById('w'+i);}), B=[1,2,3].map(function(i){return document.getElementById('b'+i);}), L=[1,2,3].map(function(i){return document.getElementById('l'+i);});
@@ -66,9 +67,12 @@
       W[i].style.clipPath='polygon('+lt+'px 0,'+Math.max(et,lt)+'px 0,'+Math.max(eb,lb)+'px 100%,'+lb+'px 100%)';
       B[i].style.clipPath='polygon('+et+'px 0,'+(et+28)+'px 0,'+(eb+28)+'px 100%,'+eb+'px 100%)';
       B[i].style.visibility=q[i]>0?'visible':'hidden';
-      L[i].classList.toggle('on', q[i]>0.85); L[i].tabIndex=q[i]>0.85?0:-1; }
+      L[i].classList.toggle('on', q[i]>0.85); }
   }
   var cue=document.getElementById('cue'); cue.addEventListener('click', function(){ var r=stage.getBoundingClientRect(), top=hdr.getBoundingClientRect().bottom, ph=pin.getBoundingClientRect().height; scrollBy({top:(r.height-ph)-(top-r.top), behavior:'smooth'}); });
+  // the three ways can be reached with Tab at any point: focusing one that has not been uncovered yet scrolls it into view
+  function reveal(){ var r=stage.getBoundingClientRect(), top=hdr.getBoundingClientRect().bottom, ph=pin.getBoundingClientRect().height; scrollBy({top:(r.height-ph)-(top-r.top), behavior:'auto'}); draw(); }
+  L.forEach(function(a){ a.addEventListener('focus', function(){ if(!calm&&!a.classList.contains('on')) reveal(); }); });
   if(calm){ H.classList.add('calm'); stage.parentNode.insertBefore(title, stage); }
   var tick=false; addEventListener('scroll', function(){ if(!tick){ tick=true; requestAnimationFrame(function(){ tick=false; draw(); }); } }, {passive:true});
   addEventListener('resize', size); size();

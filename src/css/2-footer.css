@@ -3,7 +3,7 @@
   .site-foot .cols { display: grid; grid-template-columns: 1fr 1.3fr 1fr 1.3fr; gap: 56px; align-items: start; }
   .site-foot nav { all: unset; display: block; }
   .site-foot .cols p { white-space: nowrap; }
-  .site-foot h2 { all: unset; display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #d9c9ac; margin: 4px 0 14px; }
+  .site-foot .lbl { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #d9c9ac; margin: 4px 0 14px; }
   .site-foot p { all: unset; display: block; font-size: 16px; line-height: 1.9; color: #fbf4e8; }
   .site-foot .brand img { height: 48px; width: auto; display: block; margin: 0 0 14px; }
   .site-foot a { color: #fbf4e8; text-decoration: none; border: 0; padding: 0; font-weight: 400; }

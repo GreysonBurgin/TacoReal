@@ -1,5 +1,4 @@
 button { font: inherit; color: inherit; }
-a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .btn { background: var(--ink); color: var(--surface); border: 0; padding: 14px 24px; font-size: 17px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
 .btn.quiet { background: none; color: var(--ink); padding: 0 0 2px; border-bottom: 2px solid var(--ink); font-size: 16px; }
 /* 1. the word, enormous, like the address on Location. our own line about the tortillas beside it. */
@@ -41,7 +40,6 @@ body.ordering .startrow { display: none; }
 .row .lv { order: 5; margin-left: auto; }
 .row .btn { order: 6; margin-left: 0; }
 .startrow .lv { display: block; margin-top: 12px; }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 /* the top: T/aco, enormous. a still life stands on the table edge, and the table edge is the line between the banner and the menu */
 .head { padding: 44px 160px 0; display: flex; align-items: baseline; justify-content: space-between; gap: 64px; }
 .head h1 { font-family: var(--display); font-weight: 400; font-size: 84px; line-height: 1; margin: 0; white-space: nowrap; }

@@ -9,12 +9,12 @@
       <p class="intro allergy">Have an allergy? Tell us before you order, or call <a data-f="phone" href="tel:+13034439468">(303) 443-9468</a>.</p>
       <div class="orn" aria-hidden="true"><i></i></div>
     </section>
-    <div class="row c"><span id="jump" style="display:contents"></span></div>
+    <div class="row c"><span id="jump" style="display:contents">{{menu.jump}}</span></div>
     <p class="cstart"><a class="btn toast" id="go1" data-link="order" href="https://toast.app/r/t-aco-an-urban-taqueria-1175-walnut-st/order">Start an order<span class="ext" aria-hidden="true">↗</span></a><span class="lv">Opens Toast, where we take orders.</span></p>
 
-    <div class="menu" id="menu"></div>
+    <div class="menu" id="menu">{{menu.html}}</div>
     <section class="top" aria-label="Start an order">
-      <img class="table" src="menu-top.webp" alt="Three still lifes on a wooden table: a knife balanced on its point with a lime on its handle, a tall stack of corn tortillas balanced on a single lime, and an upright glass of margarita whose surface is tilted">
+      <img loading="lazy" class="table" src="menu-top.webp" alt="Three still lifes on a wooden table: a knife balanced on its point with a lime on its handle, a tall stack of corn tortillas balanced on a single lime, and an upright glass of margarita whose surface is tilted">
       <p class="order-here"><a class="btn toast" data-link="order" href="https://toast.app/r/t-aco-an-urban-taqueria-1175-walnut-st/order">Start an order<span class="ext" aria-hidden="true">↗</span></a><span class="lv">Opens Toast, where we take orders.</span></p>
     </section>
     <p class="vocab"><span>Milled.</span><span>Pressed.</span><span>Braised.</span><span>Grilled.</span><span>Pickled.</span><span>Topped.</span></p>
@@ -32,6 +32,7 @@
   function headPrice(p){ var d=Math.floor(p), c=Math.round((p-d)*100); return '<span class="pr">$'+d+(c?'<sup>'+(c<10?'0':'')+c+'</sup>':'')+'</span>'; }
   function render(M, checked){
   var jump=[], html='';
+  if(!M.groups.length){ $('menu').innerHTML='<p class="fine">Our menu is not showing here right now. Today\u2019s menu is on Toast.</p>'; $('jump').innerHTML=''; return; }
   M.groups.forEach(function(g){
     if(g.nav) jump.push('<a href="#'+g.id+'">'+esc(g.nav)+'</a>');
     html+='<section class="grp" id="'+g.id+'" aria-labelledby="h-'+g.id+'">'+'<h2 id="h-'+g.id+'"'+(g.price?' aria-label="'+esc(g.name)+', '+money(g.price)+' each"':'')+'>'+(g.price?headPrice(g.price):'')+esc(g.name)+'</h2><ul class="items'+(g.compact?' compact':'')+'">';

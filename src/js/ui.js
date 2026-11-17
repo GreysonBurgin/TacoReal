@@ -10,7 +10,7 @@
     if(u.pathname===location.pathname && u.hash.length>1){ var el=find(u.hash); if(el){ e.preventDefault(); if(location.hash!==u.hash) history.pushState(null,'',u.hash); go(el); } } });
   addEventListener('popstate', function(){ var el=location.hash.length>1&&find(location.hash); if(el) go(el); else scrollTo({top:0, behavior:calm?'auto':'smooth'}); });
   if(location.hash.length>1){ var t=find(location.hash); if(t){ if('scrollRestoration' in history) history.scrollRestoration='manual'; scrollTo(0,0);
-    addEventListener('load', function(){ scrollTo(0,0); setTimeout(function(){ go(t); }, 350); }); } }
+    addEventListener('load', function(){ scrollTo(0,0); setTimeout(function(){ var now=find(location.hash)||t; if(document.contains(now)) go(now); }, 350); }); } }
 })();
 
 /* Phone menu. */

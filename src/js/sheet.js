@@ -25,7 +25,7 @@
     var r=(typeof text==='string'?csv(text):text.slice()), h=(r.shift()||[]).map(function(x){ return String(x).trim().toLowerCase(); });
     return r.map(function(c){ var o={}; h.forEach(function(k,i){ o[k]=(c[i]==null?'':String(c[i])).trim(); }); return o; });
   }
-  function num(v){ var n=parseFloat(String(v).replace(/[^0-9.]/g,'')); return isNaN(n)?null:n; }
+  function num(v){ v=String(v==null?'':v).trim(); if(!/^\$?\s*\d+(\.\d{1,2})?$/.test(v)) return null; var n=parseFloat(v.replace(/[^0-9.]/g,'')); return isNaN(n)?null:n; }   // a price is a plain positive number; anything else is no price
   function yes(v){ return /^(y|yes|true|x|1)$/i.test(v||''); }
   function slug(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'x'; }
   function time24(v){ var m=/^\s*(\d{1,2})(?::(\d{2}))?(?::\d{2})?\s*([ap])?\.?m?\.?\s*$/i.exec(v||''); if(!m) return null;
@@ -64,7 +64,8 @@
     secs=secs.filter(function(s){ return s.items.length; });
     secs.forEach(function(s){ s.items=s.items.filter(function(it){ return it.price||s.price; }); var n=s.items.length; if(!s.compact&&n<=3&&n%2===1) s.items[n-1].solo=true; });
     secs=secs.filter(function(s){ return s.items.length; });
-    if(secs.length) out.menu={ groups:secs };
+    var seen={}; secs.forEach(function(s){ var id=s.id, n=2; while(seen[id]) id=s.id+'-'+(n++); seen[id]=1; s.id=id; });   // two sections never share an id
+    if(secs.length||t.Menu.length) out.menu={ groups:secs };   // an emptied menu is shown as empty; a sheet with no Menu rows at all changes nothing
     return out;
   }
 
@@ -81,11 +82,12 @@
   // 2. no sheet connected: the editor's demo mode publishes to this browser only
   if(!cfg.api&&!cfg.id&&!cfg.base){ var demo=stored('taco-demo'); if(demo){ try{ show(build(tables(demo))); }catch(e){} } return; }
 
-  var src=cfg.api||cfg.id||cfg.base, saved=stored(KEY); if(saved&&saved.id===src&&!preview){ try{ show(saved.data); }catch(e){} }
+  var WEEK=7*24*3600*1000;   // a copy older than this is not trusted; the page keeps the facts it was built with instead
+  var src=cfg.api||cfg.id||cfg.base, saved=stored(KEY); if(saved&&saved.id===src&&!preview&&saved.at&&Date.now()-saved.at<WEEK){ try{ show(saved.data); }catch(e){} }
   var load = cfg.api
     ? fetch(cfg.api+(cfg.api.indexOf('?')<0?'?':'&')+'action=read', {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('editor '+r.status); return r.json(); }).then(function(j){ if(!j||!j.tabs) throw new Error('editor sent no data'); return tables(j.tabs); })
     : Promise.all(TABS.map(function(tab){ return fetch(url(tab), {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error(tab+' '+r.status); return r.text(); }); })).then(function(texts){ var o={}; TABS.forEach(function(tab,i){ o[tab]=csv(texts[i]); }); return tables(o); });
   load.then(function(t){ var data=build(t); show(data); badge();
-      if(!preview){ try{ localStorage.setItem(KEY, JSON.stringify({ id:src, data:data })); }catch(e){} } })
+      if(!preview){ try{ localStorage.setItem(KEY, JSON.stringify({ id:src, at:Date.now(), data:data })); }catch(e){} } })
     .catch(function(e){ if(window.console) console.warn('T/aco editor data not read, keeping the built-in facts:', e.message); });
 })();

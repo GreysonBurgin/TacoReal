@@ -11,6 +11,8 @@ body{overflow-x:clip}
 @font-face { font-family: "Sancreek"; src: url("Sancreek-Regular.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "DM Sans"; src: url("DMSans.woff") format("woff"); font-weight: 100 900; font-display: swap; }
 * { box-sizing: border-box; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }   /* read aloud, not shown */
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 img { width: auto; height: auto; }   /* each <img> carries its width and height so its space is held; CSS still decides the size shown */
 .page { width: 1600px; }
 header { background: var(--surface); color: var(--ink); height: 96px; display:flex; align-items:center; justify-content:space-between; padding: 0 64px; position: sticky; top: 0; z-index: 20; }

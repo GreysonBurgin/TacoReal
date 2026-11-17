@@ -47,7 +47,7 @@
         <blockquote><p>“We come here every Tuesday and always have an amazing time.”</p><cite>Coco D · Google review</cite></blockquote>
         <blockquote><p>“Creative without being overcomplicated.”</p><cite>Gerald J · Google review</cite></blockquote>
       </div>
-      <p class="regnote"><button type="button" id="regpause" aria-pressed="false">Pause</button><button type="button" id="regnext" aria-pressed="false">Faster</button></p>
+      <p class="regnote"><button type="button" id="regpause">Pause</button><button type="button" id="regnext">Faster</button></p>
   </section>
 
   <footer class="mfoot">
@@ -86,10 +86,10 @@
     function next(){ i=(i+1)%q.length; show(); }
     var paused=false, pz=document.getElementById('regpause');
     function arm(){ clearInterval(t); if(!paused && !matchMedia('(prefers-reduced-motion: reduce)').matches) t=setInterval(next, fast?2200:5500); }
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches){ paused=true; pz.textContent='Next quote'; pz.removeAttribute('aria-pressed'); }
-    pz.addEventListener('click',function(){ if(pz.textContent==='Next quote'){ next(); return; } paused=!paused; pz.textContent=paused?'Play':'Pause'; pz.setAttribute('aria-pressed',paused); arm(); });
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){ paused=true; pz.textContent='Next quote'; }
+    pz.addEventListener('click',function(){ if(pz.textContent==='Next quote'){ next(); return; } paused=!paused; pz.textContent=paused?'Play':'Pause'; arm(); });
     box.addEventListener('focusin',function(){ clearInterval(t); }); box.addEventListener('focusout',arm);
-    btn.addEventListener('click',function(){ fast=!fast; btn.textContent=fast?'Slower':'Faster'; btn.setAttribute('aria-pressed',fast); next(); arm(); });
+    btn.addEventListener('click',function(){ fast=!fast; btn.textContent=fast?'Slower':'Faster'; next(); arm(); });
     box.addEventListener('mouseenter',function(){ clearInterval(t); }); box.addEventListener('mouseleave',arm);
     show(); arm();
   })();
@@ -102,7 +102,7 @@
     function place(){ if(!cur) return; if(document.documentElement.classList.contains('m')){ if(plate.parentNode!==cur.parentNode){ var t=cur.getBoundingClientRect().top; cur.parentNode.appendChild(plate); scrollBy(0, cur.getBoundingClientRect().top-t); } } else if(plate.parentNode!==home){ home.insertBefore(plate, after); } }
     addEventListener('resize', place);
     function serve(b){ cur=b; ds.forEach(function(d){ d.setAttribute('aria-pressed', String(d===b)); }); place();
-      plate.innerHTML=''; JSON.parse(b.dataset.imgs).forEach(function(p){ var i=new Image(); i.src=p[0]; i.alt=p[1]; plate.appendChild(i); }); }
+      plate.innerHTML=''; JSON.parse(b.dataset.imgs).forEach(function(p){ var i=new Image(); if(p[2]){ i.width=p[2]; i.height=p[3]; } i.src=p[0]; i.alt=p[1]; plate.appendChild(i); }); }
     ds.forEach(function(d){ d.addEventListener('click', function(){ serve(d); }); });
     serve(ds[0]);
   })();
