@@ -1,4 +1,4 @@
-# Builds the site and publishes dist/ to GitHub Pages on every push to main.
+# Builds the site, checks it, and publishes dist/ to GitHub Pages on every push to main.
 # One-time switch in the repository: Settings > Pages > Source: GitHub Actions.
 name: Publish site
 on:
@@ -20,7 +20,7 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: python3 build.py
+      - run: python3 tests/check.py   # builds the site and checks it; a failure stops here and the site already online is left alone
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

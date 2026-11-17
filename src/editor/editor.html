@@ -168,7 +168,7 @@
     ['Mailing list link','Mailing list','Every footer','url','b'],['Gift cards link','Gift cards','Every footer','url','b'],['Catering request link','Catering request form','Catering request buttons','url','b'],['Event request link','Event request form','Plan an event buttons','url','b'],
     ['Announcement','Announcement','Shown across the top of every page','text','c'],['Announcement link text','Link text (optional)','For example: Check Toast for today’s hours','text','c'],['Announcement link','Link address (optional)','Where that link goes','url','c'],['Prices last checked','Prices last checked','Printed under the menu, for example 13 November 2026','text','c'] ];
   var TIMES=[]; (function(){ for(var h=6;h<24;h++) for(var m=0;m<60;m+=30) TIMES.push((h%12||12)+':'+(m?'30':'00')+' '+(h<12?'AM':'PM')); TIMES.push('12:00 AM'); })();
-  var S={ sections:[], hours:[], info:{} }, rev='0', pass='', dirty=false, lastRemoved=null, uid=0;
+  var S={ sections:[], hours:[], info:{} }, rev='0', pass='', dirty=false, lastRemoved=null, uid=0, gen=0, busy=false;   // gen counts edits, so a save knows whether it is still the latest
 
   /* ---------- data in and out ---------- */
   function t12(t){ var p=String(t).split(':'), h=+p[0], m=+p[1]; return (h%12||12)+':'+(m<10?'0':'')+m+' '+(h<12||h===24?'AM':'PM'); }
@@ -183,7 +183,7 @@
     INFO.forEach(function(f){ tabs.Info.push([f[0], v[f[0]]||'', f[2]]); });
     return tabs;
   }
-  function price(v){ var n=parseFloat(String(v==null?'':v).replace(/[^0-9.]/g,'')); return isNaN(n)?'':n.toFixed(2); }
+  function price(v){ v=String(v==null?'':v).trim(); if(!/^\$?\s*\d+(\.\d{1,2})?$/.test(v)) return ''; return parseFloat(v.replace(/[^0-9.]/g,'')).toFixed(2); }   // a plain positive number, or nothing: -5 is not read as 5
   function fromTabs(tabs){
     var by={}; S={ sections:[], hours:[], info:{} };
     (tabs.Sections||[]).slice(1).forEach(function(r){ if(!r[0]) return; var s={ k:++uid, name:String(r[0]), heading:String(r[1]||r[0]), price:price(r[2]), nav:/^y/i.test(r[3]||''), layout:/^compact/i.test(r[4]||'')?'Compact':'Standard', note:String(r[5]||''), items:[] }; by[s.name.toLowerCase()]=s; S.sections.push(s); });
@@ -211,7 +211,7 @@
   /* ---------- small helpers ---------- */
   function el(tag, attrs, kids){ var e=document.createElement(tag); Object.keys(attrs||{}).forEach(function(k){ var v=attrs[k]; if(v===false||v==null) return; if(k==='text') e.textContent=v; else if(k==='class') e.className=v; else if(k.slice(0,2)==='on') e.addEventListener(k.slice(2), v); else if(v===true) e.setAttribute(k,''); else e.setAttribute(k,v); }); (kids||[]).forEach(function(c){ if(c) e.appendChild(c); }); return e; }
   function field(label, input, cls){ var id='f'+(++uid); input.id=id; return el('div',{class:cls||'f'},[el('label',{for:id,text:label}),input]); }
-  function touch(){ dirty=true; $('publish').disabled=false; $('state').textContent='Unpublished changes'; $('state').className='state dirty'; }
+  function touch(){ dirty=true; gen++; $('publish').disabled=busy; $('state').textContent='Unpublished changes'; $('state').className='state dirty'; }
   function clean(msg){ dirty=false; $('publish').disabled=true; $('state').textContent=msg; $('state').className='state'; }
   var toastTimer; function toast(msg, undo, err){ $('toastmsg').textContent=msg; $('undo').hidden=!undo; $('toast').className='toast'+(err?' err':''); $('toast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(function(){ $('toast').hidden=true; }, undo?9000:5000); }
   function bind(input, obj, key, after){ var ev=(input.type==='checkbox'||input.tagName==='SELECT')?'change':'input'; input.addEventListener(ev, function(){ obj[key]=input.type==='checkbox'?input.checked:input.value; touch(); if(after) after(); }); return input; }
@@ -288,16 +288,27 @@
 
   /* ---------- preview and publish ---------- */
   function problems(){ var bad=[]; S.sections.forEach(function(s){ s.items.forEach(function(it){ if(it.name.trim()&&it.status!=='Hidden'&&it.status!=='Draft'&&!it.price&&!s.price) bad.push(it.name); }); });
+    var links=INFO.filter(function(f){ return f[3]==='url'&&(S.info[f[0]]||'').trim()&&!/^https?:\/\/\S+$/i.test((S.info[f[0]]||'').trim()); }).map(function(f){ return f[1]; });
+    if(links.length) return 'These links need a web address that starts with https://: '+links.join(', ')+'.';
+    var days=S.hours.filter(function(h){ return !h.closed&&(!h.opens||!h.closes||h.opens===h.closes); }).map(function(h){ return h.day; });
+    if(days.length) return 'Set an opening and a closing time for '+days.join(', ')+', or mark it closed.';
+    var unnamed=S.sections.filter(function(s){ return !(s.name||s.heading||'').trim()&&s.items.some(function(i){ return i.name.trim(); }); }).length;
+    if(unnamed) return 'A section with items in it has no heading. Give it one.';
     return bad.length?'These items are Live but have no price: '+bad.slice(0,4).join(', ')+(bad.length>4?' and '+(bad.length-4)+' more':'')+'. Add a price, or set them to Draft.':''; }
   $('preview').addEventListener('click', function(){ try{ localStorage.setItem('taco-draft', JSON.stringify(toTabs())); }catch(e){ toast('This browser would not store the preview.', false, true); return; } var w=window.open('editor-preview.html', 'taco-preview', 'popup=yes,width=1320,height=900'); if(w) w.focus(); else toast('Your browser blocked the preview window. Allow pop-ups for this page and try again.', false, true); });
   $('publish').addEventListener('click', function(){
     var p=problems(); if(p){ toast(p, false, true); return; }
-    var data=toTabs(); $('publish').disabled=true; $('state').textContent='Publishing…';
+    if(busy) return;
+    var data=toTabs(), sent=gen; $('publish').disabled=true; $('state').textContent='Publishing…';
     if(!API){ try{ localStorage.setItem('taco-demo', JSON.stringify(data)); clean('Published to this browser (demo)'); toast('Published. Open the website in this browser to see it.'); }catch(e){ touch(); toast('This browser would not store the changes.', false, true); } return; }
-    post({ action:'write', passcode:pass, rev:rev, tabs:data }).then(function(r){
-      if(r&&r.ok){ rev=r.rev; clean('Published '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})); toast('Published. The website shows it within a few minutes.'); }
-      else { touch(); toast((r&&r.message)||'That did not save. Nothing on the website changed.', false, true); if(r&&r.error==='passcode'){ try{ sessionStorage.removeItem('taco-pass'); }catch(e){} } }
-    }).catch(function(){ touch(); toast('Could not reach the sheet. Nothing on the website changed. Check your connection and try again.', false, true); });
+    busy=true;
+    function again(msg){ busy=false; dirty=true; $('publish').disabled=false; $('state').textContent=msg||'Unpublished changes'; $('state').className='state dirty'; }
+    post({ action:'write', passcode:pass, rev:rev, tabs:data, full:true }).then(function(r){
+      if(r&&r.ok){ rev=r.rev; busy=false; var at=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+        if(gen===sent){ clean('Published '+at); toast('Published. The website shows it the next time a page is loaded.'); }
+        else { again('Published '+at+'. Changes made since are not published yet'); toast('Published. What you changed while it was saving still needs Publish.'); } }   // edits made during the save are kept, and still marked unpublished
+      else { again(); toast((r&&r.message)||'That did not save. Nothing on the website changed.', false, true); if(r&&r.error==='passcode'){ try{ sessionStorage.removeItem('taco-pass'); }catch(e){} } }
+    }).catch(function(){ again('Not sure that saved'); toast('The answer from the sheet did not arrive, so this may or may not have saved. Reload the editor to see what the sheet holds before publishing again.', false, true); });
   });
   addEventListener('beforeunload', function(e){ if(dirty){ e.preventDefault(); e.returnValue=''; } });
   $('reset').addEventListener('click', function(){ try{ localStorage.removeItem('taco-demo'); localStorage.removeItem('taco-draft'); }catch(e){} fromTabs(builtIn()); renderAll(); clean('Demo reset to the website as built'); });
@@ -305,7 +316,13 @@
   /* ---------- start ---------- */
   function open(tabs, msg){ fromTabs(tabs); renderAll(); $('gate').hidden=true; $('app').hidden=false; clean(msg); }
   if(!API){ $('demo').hidden=false; var d=stored('taco-demo'); open(d||builtIn(), d?'Showing what you last published in this browser':'Showing the website as built'); return; }
-  function load(){ return fetch(API+(API.indexOf('?')<0?'?':'&')+'action=read', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){ rev=j.rev; open(j.tabs, 'Up to date with the sheet'); }); }
+  function empty(tabs){ return ((tabs.Menu||[]).length<2)&&((tabs.Info||[]).length<2); }
+  function got(j){ rev=j.rev;
+    if(empty(j.tabs)){ open(builtIn(), ''); touch(); $('state').textContent='The sheet is empty. This is the website as built: Publish to fill the sheet'; return; }   // a new sheet: start from the site
+    open(j.tabs, 'Up to date with the sheet'); }
+  function load(){ // with the passcode the sheet answers with everything, Drafts and Hidden included; an older sheet script only knows the open read
+    return post({ action:'read', passcode:pass }).then(function(j){ if(j&&j.ok&&j.tabs) return got(j);
+      return fetch(API+(API.indexOf('?')<0?'?':'&')+'action=read', {cache:'no-store'}).then(function(r){ return r.json(); }).then(got); }); }
   function enter(p){ return post({ action:'check', passcode:p }).then(function(r){ if(!r||!r.ok) throw new Error((r&&r.message)||'That passcode is not right.'); pass=p; try{ sessionStorage.setItem('taco-pass', p); }catch(e){} return load(); }); }
   var kept=''; try{ kept=sessionStorage.getItem('taco-pass')||''; }catch(e){}
   $('gate').hidden=false;
