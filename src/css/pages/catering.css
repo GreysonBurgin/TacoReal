@@ -52,40 +52,16 @@ dialog#order::backdrop { background: rgba(20,12,6,0.6); }
 dialog#order[open] { animation: slide .32s ease-out; }
 @keyframes slide { from { transform: translateX(60px); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { dialog#order[open] { animation: none; } }
-.sheet-head { display: flex; align-items: baseline; justify-content: space-between; padding: 40px 48px 8px; }
-.sheet-head h2 { font-size: 44px; margin: 0; }
 .x { font: inherit; font-size: 15px; font-weight: 500; background: none; border: 0; border-bottom: 2px solid var(--ink); padding: 0 0 2px; cursor: pointer; color: var(--ink); }
 form { padding: 16px 48px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 20px; }
-.field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.wide, fieldset { grid-column: 1 / -1; }
+fieldset { grid-column: 1 / -1; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 label, legend { font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); padding: 0; }
 legend { margin-bottom: 8px; }
-.req { color: var(--action); }
 input[type=text], input[type=email], input[type=tel], input[type=number], input[type=date], select, textarea { font: inherit; font-size: 17px; padding: 13px 14px; border: 1.5px solid var(--ink-muted); background: var(--surface); color: var(--ink); border-radius: 0; width: 100%; }
 textarea { min-height: 96px; resize: vertical; }
 input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-.seg { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
-.seg label { position: relative; text-transform: none; letter-spacing: 0; font-size: 16px; color: var(--ink); border: 1.5px solid var(--ink-muted); margin-left: -1.5px; padding: 12px 14px; cursor: pointer; display: block; }
-.seg label:first-of-type { margin-left: 0; }
-.seg label b { display: block; font-family: var(--display); font-weight: 400; font-size: 22px; margin-top: 2px; }
-.seg input { position: absolute; opacity: 0; }
-.seg label:has(input:checked) { background: var(--ink); color: var(--surface); border-color: var(--ink); z-index: 1; }
-.seg label:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; z-index: 2; }
-.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
-.checks label, .flex { text-transform: none; letter-spacing: 0; font-size: 16px; color: var(--ink); display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.checks label span { color: var(--ink-muted); margin-left: auto; }
 input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--ink); margin: 0; flex: none; }
-.err { font-size: 14px; font-weight: 500; color: var(--action); }
-.invalid input, .invalid select { border-color: var(--action); border-width: 2.5px; }
-.sheet-foot { grid-column: 1 / -1; position: sticky; bottom: 0; background: var(--surface-raised); margin: 12px -48px 0; padding: 20px 48px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); }
-.est b { font-family: var(--display); font-weight: 400; font-size: 32px; display: block; line-height: 1; margin-bottom: 4px; }
-.est span { font-size: 14px; color: var(--ink-muted); display: block; max-width: 30ch; }
-.sheet-foot button { font: inherit; font-size: 17px; font-weight: 500; padding: 16px 28px; background: var(--ink); color: var(--surface); border: 0; cursor: pointer; flex: none; }
-.done { padding: 24px 48px 48px; }
-.done h3 { font-family: var(--display); font-weight: 400; font-size: 30px; margin: 0 0 12px; }
-.done p, .done li { font-size: 17px; line-height: 1.55; }
-.done ul { padding-left: 20px; }
 .close { padding: 40px 160px; justify-content: center; display: flex; align-items: center; gap: 20px; font-size: 18px; }
 .close a { color: var(--ink); font-weight: 500; }
 .close .sl { height: 22px; }

@@ -11,7 +11,6 @@
 .act { position: relative; height: 640px; }
 .act .people { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .act .room { position: relative; background-size: cover; background-position: center; }
-.act .cut { clip-path: polygon(0 0, 100% 0, 100% 100%, 130px 100%); }
 /* the room edge leans like the slash */
 .act .copy { position: absolute; left: 160px; bottom: 64px; width: 640px; color: var(--surface); }
 .act .copy h2 { font-family: var(--display); font-weight: 400; font-size: 40px; text-wrap: balance; line-height: 1.05; margin: 0 0 12px; }
