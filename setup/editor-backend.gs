@@ -8,7 +8,7 @@
  *   1. Open the sheet. Extensions > Apps Script. Delete what is there and paste this whole file.
  *   2. Change PASSCODE below to something long that only T/aco knows.
  *   3. Deploy > New deployment > type "Web app". Execute as: Me. Who has access: Anyone. Deploy, and approve the prompt.
- *   4. Copy the web app address (it ends in /exec) into site-data.js, in  sheet: { api: "..." }.
+ *   4. Copy the web app address (it ends in /exec) into src/data/site.json, in  "sheet": { "api": "..." }.
  * After changing this file later: Deploy > Manage deployments > edit > Version: New version.
  */
 var PASSCODE = 'change-me-before-deploying';

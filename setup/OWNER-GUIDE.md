@@ -1,6 +1,6 @@
 # Changing the website (for the owner)
 
-Open **[site address]/editor.html** and enter the passcode. Bookmark it on your phone.
+Open **https://greysonburgin.github.io/TacoReal/editor.html** and enter the passcode. Bookmark it on your phone.
 
 - **Menu**: open a section, change a name, description or price, or set an item to Sold out, Hidden or Draft. Add or remove items and sections.
 - **Hours**: set each day's opening and closing time, or mark a day closed.

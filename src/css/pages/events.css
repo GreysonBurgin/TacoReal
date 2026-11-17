@@ -38,3 +38,4 @@
 .sheet p { font-size: 18px; line-height: 1.55; margin: 0 0 28px; }
 .btn.secondary { background: transparent; color: var(--ink); border-color: var(--ink-muted); margin-left: 12px; }
 /* nav: paper, the slash as punctuation, the hours live, the button in ink */
+.act1 .count { color: var(--surface); font-size: 20px; text-shadow: 0 1px 2px rgba(20,12,6,0.9), 0 0 14px rgba(20,12,6,0.75); }   /* the caption on the empty room: cream, as drawn; ".act1 p" was turning it brown */

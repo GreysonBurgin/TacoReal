@@ -46,3 +46,7 @@ header .hrs { font-size: 16px; color: var(--ink-muted); display: flex; align-ite
 #concept a { color: #fbf4e8; text-underline-offset: 3px; margin-left: 6px; }
 #concept a:focus-visible { outline: 3px solid #91ac7f; outline-offset: 3px; }
 html.m #concept { font-size: 13px; padding: 8px 14px; }
+
+/* small links and buttons get a taller area to click or tap; the invisible ::after extends it, so nothing on the page moves */
+html:not(.m) :is(.site-foot a, #concept a, header .hrs, .row a:not(.btn), main p > a:not(.btn):not(.cta):not(.go), .back a, .regnote button) { position: relative; }
+html:not(.m) :is(.site-foot a, #concept a, header .hrs, .row a:not(.btn), main p > a:not(.btn):not(.cta):not(.go), .back a, .regnote button)::after { content: ""; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }

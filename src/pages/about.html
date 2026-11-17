@@ -47,7 +47,7 @@
         <blockquote><p>“We come here every Tuesday and always have an amazing time.”</p><cite>Coco D · Google review</cite></blockquote>
         <blockquote><p>“Creative without being overcomplicated.”</p><cite>Gerald J · Google review</cite></blockquote>
       </div>
-      <p class="regnote"><button type="button" id="regnext" aria-pressed="false">Faster</button></p>
+      <p class="regnote"><button type="button" id="regpause" aria-pressed="false">Pause</button><button type="button" id="regnext" aria-pressed="false">Faster</button></p>
   </section>
 
   <footer class="mfoot">
@@ -78,13 +78,17 @@
   })();
 </script>
 <script>
-  // regulars: one quote at a time on a loop. the button doubles the speed; press again to slow down
+  // regulars: one quote at a time on a loop. Pause stops it; Faster doubles the speed. With reduced motion it does not move and the first button steps through.
   (function(){
     var box=document.getElementById('reg'), q=box?[].slice.call(box.children):[], i=0, t, fast=false, btn=document.getElementById('regnext');
     if(!q.length) return;
     function show(){ q.forEach(function(b){ b.classList.remove('on'); }); q[i].classList.add('on'); }
     function next(){ i=(i+1)%q.length; show(); }
-    function arm(){ clearInterval(t); if(!matchMedia('(prefers-reduced-motion: reduce)').matches) t=setInterval(next, fast?2200:5500); }
+    var paused=false, pz=document.getElementById('regpause');
+    function arm(){ clearInterval(t); if(!paused && !matchMedia('(prefers-reduced-motion: reduce)').matches) t=setInterval(next, fast?2200:5500); }
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){ paused=true; pz.textContent='Next quote'; pz.removeAttribute('aria-pressed'); }
+    pz.addEventListener('click',function(){ if(pz.textContent==='Next quote'){ next(); return; } paused=!paused; pz.textContent=paused?'Play':'Pause'; pz.setAttribute('aria-pressed',paused); arm(); });
+    box.addEventListener('focusin',function(){ clearInterval(t); }); box.addEventListener('focusout',arm);
     btn.addEventListener('click',function(){ fast=!fast; btn.textContent=fast?'Slower':'Faster'; btn.setAttribute('aria-pressed',fast); next(); arm(); });
     box.addEventListener('mouseenter',function(){ clearInterval(t); }); box.addEventListener('mouseleave',arm);
     show(); arm();
