@@ -1,0 +1,75 @@
+{
+  "info": {
+    "street": "1175 Walnut Street",
+    "streetShort": "1175 Walnut",
+    "city": "Boulder, CO",
+    "phone": "(303) 443-9468",
+    "name": "T/aco",
+    "region": "CO",
+    "locality": "Boulder",
+    "postalCode": "80302"
+  },
+  "links": {
+    "directions": "https://maps.google.com/?q=T%2FACO+1175+Walnut+St+Boulder+CO",
+    "order": "https://toast.app/r/t-aco-an-urban-taqueria-1175-walnut-st/order",
+    "reservations": "https://www.yelp.com/reservations/t-aco-an-urban-taqueria-boulder",
+    "instagram": "https://www.instagram.com/tacoboulder/",
+    "mailing": "https://tacocolorado.com/join-our-mailing-list",
+    "giftcards": "https://www.toasttab.com/t-aco-an-urban-taqueria-1175-walnut-st/giftcards",
+    "catering": "https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc",
+    "events": "https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&ot=bf768628-e903-4ea8-a194-46570531ccf6"
+  },
+  "hours": [
+    {
+      "day": "Sunday",
+      "open": "11:00",
+      "close": "21:00"
+    },
+    {
+      "day": "Monday",
+      "open": "11:00",
+      "close": "21:00"
+    },
+    {
+      "day": "Tuesday",
+      "open": "11:00",
+      "close": "21:00"
+    },
+    {
+      "day": "Wednesday",
+      "open": "11:00",
+      "close": "21:00"
+    },
+    {
+      "day": "Thursday",
+      "open": "11:00",
+      "close": "21:00"
+    },
+    {
+      "day": "Friday",
+      "open": "11:00",
+      "close": "21:30"
+    },
+    {
+      "day": "Saturday",
+      "open": "11:00",
+      "close": "21:30"
+    }
+  ],
+  "announcement": {
+    "text": "",
+    "link": "",
+    "linkText": ""
+  },
+  "pricesChecked": "13 November 2026",
+  "sheet": {
+    "api": ""
+  },
+  "site": {
+    "url": "https://greysonburgin.github.io/TacoReal/",
+    "concept": true,
+    "conceptText": "A design concept by Greyson Burgin. This is not the official T/aco website.",
+    "officialUrl": "https://tacocolorado.com",
+    "analytics": ""
+  }
+}

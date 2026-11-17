@@ -1,0 +1,16 @@
+  /* the end of every page: one quiet dark row. brand, visit, hours, explore. no photograph, no headline. */
+  .site-foot { all: unset; display: block; box-sizing: border-box; background: #2b1a0e; color: #fbf4e8; font-family: "DM Sans", system-ui, sans-serif; padding: 56px 160px 26px; position: relative; z-index: 1; }
+  .site-foot .cols { display: grid; grid-template-columns: 1fr 1.3fr 1fr 1.3fr; gap: 56px; align-items: start; }
+  .site-foot nav { all: unset; display: block; }
+  .site-foot .cols p { white-space: nowrap; }
+  .site-foot h2 { all: unset; display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #d9c9ac; margin: 4px 0 14px; }
+  .site-foot p { all: unset; display: block; font-size: 16px; line-height: 1.9; color: #fbf4e8; }
+  .site-foot .brand img { height: 48px; width: auto; display: block; margin: 0 0 14px; }
+  .site-foot a { color: #fbf4e8; text-decoration: none; border: 0; padding: 0; font-weight: 400; }
+  .site-foot p a { text-decoration: underline; text-decoration-color: rgba(251,244,232,0.35); text-underline-offset: 4px; }
+  .site-foot p a:hover { text-decoration-color: #fbf4e8; }
+  .site-foot a:focus-visible { outline: 3px solid #fbf4e8; outline-offset: 3px; }
+  .site-foot .s { margin: 0 10px; color: #d9c9ac; }
+  .site-foot .fine { font-size: 14px; line-height: 1.5; color: #d9c9ac; margin-top: 40px; padding-top: 18px; border-top: 1px solid rgba(251,244,232,0.22); }
+  .site-foot .fine a { color: #fbf4e8; margin-left: 8px; }
+  @media (max-width: 700px) { .site-foot .cols { grid-template-columns: 1fr 1fr; } .site-foot .brand, .site-foot nav { grid-column: 1 / -1; } }

@@ -1,0 +1,10 @@
+/* plain text pages: privacy, not found */
+.plain { padding: 96px 160px 120px; max-width: 1180px; }
+.plain h1 { font-family: var(--display); font-weight: 400; font-size: 88px; line-height: 1; margin: 0 0 28px; }
+.plain h2 { font-size: 24px; font-weight: 500; margin: 44px 0 10px; }
+.plain p, .plain li { font-size: 20px; line-height: 1.6; max-width: 62ch; }
+.plain ul { padding-left: 1.2em; margin: 0; } .plain li { margin: 0 0 8px; }
+.plain a:not(.btn) { color: var(--ink); text-underline-offset: 3px; }
+.plain .btn { margin: 20px 12px 0 0; }
+.plain a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+html.m .plain { padding: 40px 20px 64px; } html.m .plain h1 { font-size: 46px; } html.m .plain p, html.m .plain li { font-size: 17px; } html.m .plain h2 { font-size: 20px; }

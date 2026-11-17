@@ -1,0 +1,40 @@
+/* ACT 1 — the room, set and empty, cut at the slash angle beside the title on paper */
+.act1 { position: relative; height: 760px; overflow: hidden; background: var(--surface); display: grid; grid-template-columns: 640px 1fr; }
+.act1 .text { padding: 190px 0 0 160px; }
+.eyebrow { font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-muted); margin: 0 0 20px; }
+.act1 h1 { font-family: var(--sans); font-weight: 400; font-size: 32px; line-height: 1.35; margin: 0 0 24px; max-width: 440px; }
+.act1 h1 em { font-family: var(--display); font-style: normal; font-size: 40px; line-height: 1; }
+.act1 p { font-size: 18px; line-height: 1.55; margin: 0 0 28px; color: var(--ink-muted); max-width: 420px; }
+.act1 .room { position: relative; background: url("room-set.webp") 62% 58% / cover no-repeat; clip-path: polygon(250px 0, 100% 0, 100% 100%, 0 100%); }
+.count { position: absolute; right: 64px; bottom: 40px; font-family: var(--display); font-size: 20px; color: var(--surface); text-shadow: 0 1px 3px rgba(20,12,6,0.6); }
+/* the acts that follow: a two-column stage. Right column = the room, shrinking. Left column = people, growing. */
+.act { position: relative; height: 640px; }
+.act .people { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.act .room { position: relative; background-size: cover; background-position: center; }
+.act .cut { clip-path: polygon(0 0, 100% 0, 100% 100%, 130px 100%); }
+/* the room edge leans like the slash */
+.act .copy { position: absolute; left: 160px; bottom: 64px; width: 640px; color: var(--surface); }
+.act .copy h2 { font-family: var(--display); font-weight: 400; font-size: 40px; text-wrap: balance; line-height: 1.05; margin: 0 0 12px; }
+.act .copy p { font-size: 18px; line-height: 1.5; margin: 0; max-width: 46ch; }
+.act .people::before { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(20,12,6,0.72), rgba(20,12,6,0.05) 55%); }
+.act .count { bottom: 32px; }
+.act .copy.right { left: auto; right: 160px; text-align: right; }
+.act .copy.rip { left: auto; right: 490px; bottom: 72px; width: 600px; text-align: right; }
+.act .copy.rip p { margin-left: auto; }
+.act .copy.right p { margin-left: auto; }
+/* the paper between acts: how it works */
+.paper { padding: 88px 160px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.paper h2 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.1; margin: 0 0 16px; }
+.paper p { font-size: 18px; line-height: 1.55; margin: 0 0 16px; max-width: 54ch; }
+.paper ul { list-style: none; padding: 0; margin: 0; }
+.paper li { padding: 14px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 24px; font-size: 18px; }
+.paper li:last-child { border-bottom: 1px solid var(--line); }
+.paper li span:last-child { color: var(--ink-muted); white-space: nowrap; }
+/* the close: full of people, on a sheet */
+.close { position: relative; background: url("bar.webp") center / cover no-repeat; padding: 120px 0; }
+.close::before { content:""; position:absolute; inset:0; background: rgba(20,12,6,0.58); }
+.sheet { position: relative; width: 760px; margin: 0 auto; background: var(--surface); padding: 64px 80px 72px; text-align: center; }
+.sheet h2 { font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; margin: 0 0 16px; }
+.sheet p { font-size: 18px; line-height: 1.55; margin: 0 0 28px; }
+.btn.secondary { background: transparent; color: var(--ink); border-color: var(--ink-muted); margin-left: 12px; }
+/* nav: paper, the slash as punctuation, the hours live, the button in ink */

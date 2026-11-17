@@ -1,0 +1,93 @@
+button { font: inherit; color: inherit; }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.btn { background: var(--ink); color: var(--surface); border: 0; padding: 14px 24px; font-size: 17px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn.quiet { background: none; color: var(--ink); padding: 0 0 2px; border-bottom: 2px solid var(--ink); font-size: 16px; }
+/* 1. the word, enormous, like the address on Location. our own line about the tortillas beside it. */
+.big { padding: 56px 160px 0; display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: end; }
+.big h1 { font-family: var(--display); font-weight: 400; font-size: 168px; line-height: 0.95; margin: 0; }
+.big p { font-style: italic; font-size: 18px; line-height: 1.5; margin: 0 0 22px; }
+.row { padding: 22px 160px 40px; display: flex; align-items: center; gap: 16px; font-size: 17px; font-weight: 500; }
+.row a { color: var(--ink); text-decoration: none; }
+.row a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.row .sl { height: 16px; }
+.row .btn { margin-left: auto; }
+.band { height: 380px; background: url("tacos-tray.webp") 50% 46% / cover no-repeat; }
+/* 3. the menu, set like the paper one: a big centred head (the price in it when every dish shares one), two columns of centred dishes */
+.menu { padding: 24px 240px 72px; }
+.grp { padding: 44px 0 40px; scroll-margin-top: 104px; }
+.grp + .grp { border-top: 2px solid var(--ink); }
+.grp h2 { font-family: var(--display); font-weight: 400; font-size: 54px; line-height: 1; text-align: center; margin: 0 0 34px; }
+.grp h2 .pr { margin-right: 14px; }
+.grp h2 sup { font-size: 0.5em; vertical-align: 0.72em; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; margin-left: 1px; }
+.items { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 30px 64px; }
+.items.compact { grid-template-columns: repeat(4, 1fr); gap: 20px 24px; }
+.it { text-align: center; }
+.it.solo { grid-column: 1 / -1; }
+.it h3 { font-family: var(--display); font-weight: 400; font-size: 23px; line-height: 1.1; letter-spacing: 0.03em; text-transform: uppercase; margin: 0; }
+.compact .it h3 { font-size: 18px; }
+.it .p { font-family: var(--sans); font-size: 16px; font-weight: 500; letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums; margin-left: 10px; white-space: nowrap; }
+.it .ds { font-size: 15px; line-height: 1.45; color: var(--ink-muted); margin: 6px auto 0; max-width: 40ch; }
+.it .tg { font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; margin: 8px 0 0; }
+.it.out h3, .it.out .ds { opacity: 0.55; }
+.barnote { text-align: center; font-style: italic; font-size: 16px; line-height: 1.5; color: var(--ink-muted); margin: 36px auto 0; max-width: 60ch; }
+.fine { text-align: center; font-size: 15px; font-style: italic; margin: 0; padding: 26px 0 0; }
+.orn { display: flex; align-items: center; gap: 14px; margin-top: 44px; }
+.startrow { text-align: center; padding: 34px 0 0; }
+body.ordering .startrow { display: none; }
+.ext { margin-left: 8px; font-size: 0.9em; }
+.lv { font-size: 14px; color: var(--ink-muted); }
+.row a.btn { color: var(--surface); }
+.row a.btn:hover { text-decoration: none; }
+.row .lv { order: 5; margin-left: auto; }
+.row .btn { order: 6; margin-left: 0; }
+.startrow .lv { display: block; margin-top: 12px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* the top: T/aco, enormous. a still life stands on the table edge, and the table edge is the line between the banner and the menu */
+.head { padding: 44px 160px 0; display: flex; align-items: baseline; justify-content: space-between; gap: 64px; }
+.head h1 { font-family: var(--display); font-weight: 400; font-size: 84px; line-height: 1; margin: 0; white-space: nowrap; }
+.head p { font-style: italic; font-size: 17px; line-height: 1.5; color: var(--ink-muted); margin: 0; max-width: 52ch; text-align: right; }
+.head + .row { padding: 26px 160px 8px; }
+.menu { padding-top: 8px !important; }
+.top { position: relative; height: 500px; overflow: hidden; margin-top: -78px; }
+.menu { position: relative; z-index: 2; }
+.order-here { position: absolute; left: 0; width: 100%; top: 132px; margin: 0; text-align: center; z-index: 1; }
+.order-here .btn { font-size: 20px; padding: 18px 30px; color: var(--surface); text-decoration: none; }
+.order-here .lv { display: block; margin-top: 14px; }
+.top .table { position: absolute; left: 0; bottom: 0; width: 1600px; height: auto; display: block; pointer-events: none; }
+.top .front { z-index: 2; }
+.top h1 { position: absolute; left: 0; right: 0; bottom: 92px; z-index: 1; margin: 0; text-align: center; font-family: var(--display); font-weight: 400; font-size: 200px; line-height: 1; padding-right: 52px; color: var(--ink); white-space: nowrap; }
+.top h1 .tsl { height: 176px; margin: 0 -14px -6px -6px; overflow: visible; }
+.top h1 .gap { display: inline-block; width: 38px; }
+.tsl .face { fill: var(--ink); }
+.vocab { display: flex; justify-content: space-between; align-items: baseline; margin: 0; padding: 40px 160px 44px; font-family: var(--display); font-size: 31px; line-height: 1; color: var(--ink); }
+.vocab + .row { padding-top: 26px; }
+.strip { height: 230px; margin: 0 0 40px; background-size: cover; background-position: center; clip-path: polygon(106px 0, 100% 0, calc(100% - 106px) 100%, 0 100%); }
+.paper { padding: 56px 240px 0; text-align: center; }
+.paper h1 { margin: 0; display: flex; align-items: center; justify-content: center; gap: 36px; }
+.paper h1 img { height: 150px; display: block; }
+.paper h1 span { font-family: var(--display); font-weight: 400; font-size: 176px; line-height: 0.8; text-transform: uppercase; letter-spacing: 0.01em; color: var(--action); -webkit-text-stroke: 3px var(--ink); text-shadow: 6px 6px 0 var(--sage); padding-top: 14px; }
+.paper .tag { font-style: italic; font-size: 26px; margin: 26px 0 14px; }
+.paper .intro { font-style: italic; font-size: 17px; line-height: 1.5; color: var(--ink-muted); margin: 0 auto; max-width: 64ch; }
+.paper .orn { margin-top: 40px; }
+.row.c { justify-content: center; padding: 30px 160px 0; }
+.cstart { text-align: center; margin: 0; padding: 28px 0 8px; }
+.cstart .lv { display: block; margin-top: 12px; }
+.big-close { position: absolute; left: 240px; bottom: 58px; margin: 0; z-index: 1; font-family: var(--display); font-size: 164px; line-height: 0.92; white-space: nowrap; }
+.big-close::after { content: ""; position: absolute; left: 6px; right: 60px; bottom: 2px; height: 9px; background: rgba(30,16,6,0.6); filter: blur(5px); z-index: -1; }
+.big-close a { color: var(--ink); text-decoration: none; }
+.big-close a:hover { text-decoration: underline; text-decoration-thickness: 6px; text-underline-offset: 12px; }
+.big-close a:focus-visible { outline: 4px solid var(--focus); outline-offset: 6px; }
+/* the footer on this page is one line until it is opened */
+details.more { border-top: 1px solid var(--line); }
+details.more summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 26px 160px; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more .h { font-family: var(--display); font-size: 26px; }
+details.more .t { font-size: 16px; font-weight: 500; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+details.more .t::after { content: " +"; }
+details.more[open] .t::after { content: " −"; }
+details.more summary:hover { background: var(--surface-raised); }
+details.more summary:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+details.more[open] .h { visibility: hidden; }
+details.more footer.end { border-top: 0; }
+/* nav: paper, the slash as punctuation, the hours live, the button in ink */
+.paper .intro.allergy { margin-top: 10px; } .paper .intro.allergy a { color: inherit; }

@@ -1,0 +1,496 @@
+{
+  "restaurant": {
+    "name": "T/aco",
+    "address": "1175 Walnut Street, Boulder",
+    "phone": "(303) 443-9468"
+  },
+  "checkoutUrl": "https://toast.app/r/t-aco-an-urban-taqueria-1175-walnut-st/order",
+  "orderType": "Pick-up",
+  "orderingHours": {
+    "0": [
+      [
+        "11:15",
+        "20:15"
+      ]
+    ],
+    "1": [
+      [
+        "11:15",
+        "20:15"
+      ]
+    ],
+    "2": [
+      [
+        "11:00",
+        "12:00"
+      ],
+      [
+        "13:30",
+        "17:30"
+      ]
+    ],
+    "3": [
+      [
+        "11:15",
+        "20:15"
+      ]
+    ],
+    "4": [
+      [
+        "11:15",
+        "20:15"
+      ]
+    ],
+    "5": [
+      [
+        "11:15",
+        "20:30"
+      ]
+    ],
+    "6": [
+      [
+        "11:15",
+        "20:30"
+      ]
+    ]
+  },
+  "groups": [
+    {
+      "id": "tacos-595",
+      "nav": "Tacos",
+      "name": "Tacos",
+      "price": 5.95,
+      "items": [
+        {
+          "id": "carnitas",
+          "name": "Carnitas",
+          "desc": "Shredded pork shoulder, pineapple, grilled red onion, cilantro."
+        },
+        {
+          "id": "classico",
+          "name": "Classico",
+          "desc": "Ground beef, Oaxaca and cheddar, lettuce, tomato, crema, in a hard shell."
+        },
+        {
+          "id": "cotija",
+          "name": "Cotija",
+          "desc": "Grilled cotija cheese, guacamole, tomatoes, salsa fresca, cilantro."
+        },
+        {
+          "id": "fish",
+          "name": "Fish",
+          "desc": "Grilled white fish, cabbage, red onion, radish, cilantro, chipotle mayo."
+        },
+        {
+          "id": "mushroom",
+          "name": "Mushroom",
+          "desc": "Sautéed mushrooms, rainbow chard, white onion, grilled cotija, pico de gallo."
+        },
+        {
+          "id": "nopales",
+          "name": "Nopales",
+          "desc": "Seasoned steamed cactus, pico de gallo, cotija."
+        },
+        {
+          "id": "pork-belly",
+          "name": "Pork Belly",
+          "desc": "Braised pork belly in guajillo mole, pickled onion, fresh cotija, cilantro."
+        },
+        {
+          "id": "shrimp",
+          "name": "Shrimp",
+          "desc": "Grilled shrimp, avocado, pico de gallo, cotija, chipotle mayo."
+        },
+        {
+          "id": "tinga",
+          "name": "Tinga",
+          "desc": "Slow-braised shredded chicken in tomato and chipotle, lettuce, sour cream, cotija."
+        },
+        {
+          "id": "veggie",
+          "name": "Veggie",
+          "desc": "Grilled spaghetti squash, poblano, red onion, seasoned pepitas, cilantro."
+        },
+        {
+          "id": "verde-loco",
+          "name": "Verde Loco",
+          "desc": "Guacamole, lettuce, pico de gallo, pickled onions, avocado."
+        }
+      ]
+    },
+    {
+      "id": "tacos-650",
+      "name": "Tacos",
+      "price": 6.5,
+      "items": [
+        {
+          "id": "asada",
+          "name": "Asada",
+          "desc": "Braised chopped beef, guacamole, pico de gallo, spicy crema, cilantro.",
+          "tags": [
+            "Spicy crema"
+          ]
+        },
+        {
+          "id": "barbacoa",
+          "name": "Barbacoa",
+          "desc": "Grilled barbacoa beef, grilled onions, crema, cotija, roasted salsa verde, cilantro."
+        },
+        {
+          "id": "bbq-pork",
+          "name": "BBQ Pork",
+          "desc": "BBQ shredded pork shoulder, cabbage mix, chipotle salsa, tomatoes."
+        },
+        {
+          "id": "buffalo-chicken",
+          "name": "Buffalo Chicken",
+          "desc": "Buffalo shredded chicken, cheese, lettuce, ranch."
+        },
+        {
+          "id": "chorizo",
+          "name": "Chorizo",
+          "desc": "Seasoned ground pork, black beans, cotija, sour cream, cilantro."
+        },
+        {
+          "id": "holy-mole",
+          "name": "Holy Mole",
+          "desc": "Chicken cooked in duck fat, cabbage, red onion, radish, cilantro, avocado, cotija, sour cream."
+        },
+        {
+          "id": "korean-bbq",
+          "name": "Korean BBQ",
+          "desc": "Pork belly in Korean pepper sauce, vinegar slaw, pickled onion, cilantro, honey.",
+          "tags": [
+            "Not gluten free"
+          ]
+        },
+        {
+          "id": "pblt",
+          "name": "PBLT",
+          "desc": "Braised pork belly, guajillo sauce, lettuce, tomato, bacon, chipotle mayo."
+        },
+        {
+          "id": "philly",
+          "name": "Philly Cheese Steak",
+          "desc": "Steak, sautéed white onion, queso, chipotle mayo, tomatoes, cilantro."
+        },
+        {
+          "id": "steak",
+          "name": "Steak",
+          "desc": "Grilled steak, guacamole, pico de gallo, cotija, spicy crema.",
+          "tags": [
+            "Spicy crema"
+          ]
+        },
+        {
+          "id": "duck",
+          "name": "Duck",
+          "desc": "Braised duck in verde mole, cracklings, cabbage, cotija, crema.",
+          "soldOut": true
+        }
+      ]
+    },
+    {
+      "id": "tacos-more",
+      "name": "Street tacos and such",
+      "items": [
+        {
+          "id": "street-chicken",
+          "name": "Chicken Street Taco",
+          "price": 5,
+          "desc": "Shredded tinga, salsa fresca, raw red onion, cilantro."
+        },
+        {
+          "id": "street-pork",
+          "name": "Pork Street Taco",
+          "price": 5,
+          "desc": "Shredded pork shoulder, piña salsa, raw red onion, cilantro."
+        },
+        {
+          "id": "beandito",
+          "name": "Beandito",
+          "price": 5,
+          "desc": "Slow-cooked black beans, sautéed white onions, cotija."
+        },
+        {
+          "id": "los-caliber",
+          "name": "Los Caliber",
+          "price": 4.95,
+          "desc": "A hard-shell Classico with a layer of guac, wrapped in a soft corn tortilla."
+        },
+        {
+          "id": "birria",
+          "name": "Birria",
+          "price": 14,
+          "desc": "",
+          "tags": [
+            "Mondays only"
+          ],
+          "days": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "starters",
+      "nav": "Starters",
+      "name": "Starters",
+      "items": [
+        {
+          "id": "chips",
+          "name": "Chips",
+          "price": 2.75,
+          "desc": "House chips, cooked to order, lime and salt."
+        },
+        {
+          "id": "salsa-trio",
+          "name": "Salsa Trio",
+          "price": 3.25,
+          "desc": "Pick three: mild, fresca, pineapple pepper, chipotle, roasted verde, habañero, pico de gallo."
+        },
+        {
+          "id": "salsa-single",
+          "name": "Single Salsa",
+          "price": 1.25,
+          "desc": "Pick one."
+        },
+        {
+          "id": "guacamole",
+          "name": "Guacamole",
+          "price": 4.75,
+          "from": true,
+          "desc": "Avocado, onion, garlic, cilantro."
+        },
+        {
+          "id": "queso",
+          "name": "Queso Authentico",
+          "price": 4.25,
+          "from": true,
+          "desc": "Cheese, jalapeño, red onion, garlic, pico de gallo."
+        },
+        {
+          "id": "nopales-side",
+          "name": "Side of Nopales",
+          "price": 5,
+          "desc": "Seasoned steamed cactus salad."
+        },
+        {
+          "id": "frijoles",
+          "name": "Frijoles",
+          "price": 4.5,
+          "desc": "Black beans.",
+          "tags": [
+            "Vegan"
+          ]
+        },
+        {
+          "id": "rice",
+          "name": "Rice",
+          "price": 3.5,
+          "desc": "White rice, cilantro, white onion."
+        }
+      ]
+    },
+    {
+      "id": "fork",
+      "nav": "Fork & knife",
+      "name": "Fork & knife",
+      "items": [
+        {
+          "id": "quesadilla",
+          "name": "Quesadilla",
+          "price": 11.75,
+          "desc": "A 14-inch flour tortilla, melted Oaxaca and cheddar, mango vinaigrette coleslaw, sour cream.",
+          "solo": true
+        }
+      ]
+    },
+    {
+      "id": "dessert",
+      "nav": "Dessert",
+      "name": "Dessert",
+      "items": [
+        {
+          "id": "churros",
+          "name": "Churros",
+          "price": 4.75,
+          "desc": "Fried pastry dough, cinnamon sugar."
+        },
+        {
+          "id": "sopapillas",
+          "name": "Sopapillas",
+          "price": 4.75,
+          "desc": "Puff pastry, cinnamon, honey."
+        },
+        {
+          "id": "cinnamon-chips",
+          "name": "Cinnamon Chips",
+          "price": 3.5,
+          "desc": "Corn chips, cinnamon sugar, fresh honey.",
+          "tags": [
+            "Gluten free"
+          ],
+          "solo": true
+        }
+      ]
+    },
+    {
+      "id": "kids",
+      "nav": "Kids",
+      "name": "Kids",
+      "items": [
+        {
+          "id": "kid-taco-cheese",
+          "name": "Cheese Taco",
+          "price": 3.5,
+          "desc": ""
+        },
+        {
+          "id": "kid-taco-bean",
+          "name": "Bean & Cheese Taco",
+          "price": 3.5,
+          "desc": ""
+        },
+        {
+          "id": "kid-taco-tinga",
+          "name": "Chicken Tinga & Cheese Taco",
+          "price": 3.5,
+          "desc": ""
+        },
+        {
+          "id": "kid-taco-asada",
+          "name": "Carne Asada & Cheese Taco",
+          "price": 3.5,
+          "desc": ""
+        },
+        {
+          "id": "kid-q-bean",
+          "name": "Bean & Cheese Quesadilla",
+          "price": 3.5,
+          "desc": ""
+        },
+        {
+          "id": "kid-q-cheese",
+          "name": "Cheese Quesadilla",
+          "price": 4.75,
+          "desc": ""
+        },
+        {
+          "id": "kid-q-tinga",
+          "name": "Chicken Tinga & Cheese Quesadilla",
+          "price": 4.75,
+          "desc": ""
+        },
+        {
+          "id": "kid-q-asada",
+          "name": "Carne Asada & Cheese Quesadilla",
+          "price": 4.75,
+          "desc": ""
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "nav": "Drinks",
+      "name": "Drinks",
+      "price": 4.75,
+      "compact": true,
+      "items": [
+        {
+          "id": "coke",
+          "name": "Coke"
+        },
+        {
+          "id": "diet-coke",
+          "name": "Diet Coke"
+        },
+        {
+          "id": "sprite",
+          "name": "Sprite"
+        },
+        {
+          "id": "ginger-ale",
+          "name": "Ginger Ale"
+        },
+        {
+          "id": "iced-tea",
+          "name": "Iced Tea"
+        },
+        {
+          "id": "lemonade",
+          "name": "Lemonade"
+        },
+        {
+          "id": "straw-lemonade",
+          "name": "Strawberry Lemonade"
+        },
+        {
+          "id": "arnold-palmer",
+          "name": "Arnold Palmer"
+        },
+        {
+          "id": "shirley-temple",
+          "name": "Shirley Temple"
+        },
+        {
+          "id": "spritzer",
+          "name": "Spritzer"
+        },
+        {
+          "id": "mex-coke",
+          "name": "Mexican Coke"
+        },
+        {
+          "id": "mex-lime",
+          "name": "Mexican Lime Soda"
+        },
+        {
+          "id": "mex-orange",
+          "name": "Mexican Orange Soda"
+        },
+        {
+          "id": "waters-marg",
+          "name": "Waters Marg",
+          "price": 5.75,
+          "tags": [
+            "No alcohol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kids-drinks",
+      "name": "Kids’ drinks",
+      "price": 3,
+      "compact": true,
+      "note": "Margaritas, beer and the rest of the bar are poured in the room. Margs on the run go home by the litre: House $50, Coin $55, Flavored $60.",
+      "items": [
+        {
+          "id": "kid-coke",
+          "name": "Coke"
+        },
+        {
+          "id": "kid-diet-coke",
+          "name": "Diet Coke"
+        },
+        {
+          "id": "kid-sprite",
+          "name": "Sprite"
+        },
+        {
+          "id": "kid-ginger-ale",
+          "name": "Ginger Ale"
+        },
+        {
+          "id": "kid-lemonade",
+          "name": "Lemonade"
+        },
+        {
+          "id": "kid-straw-lemonade",
+          "name": "Strawberry Lemonade"
+        }
+      ]
+    }
+  ]
+}

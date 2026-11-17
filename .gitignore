@@ -1,2 +1,16 @@
 .DS_Store
 node_modules/
+
+# working files, not part of the site
+_*.zip
+*-demo.html
+*-try.html
+demo.html
+location-ca.html
+menu-opt-*.html
+preview.html
+dist/
+originals/
+_legacy/
+_deck/
+deck-assets/

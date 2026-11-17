@@ -1,0 +1,76 @@
+<!-- title: Catering — T/aco -->
+<!-- description: Taco catering from T/aco in Boulder, three ways, from $19 a person. -->
+  <main id="main">
+    <div class="stage" id="stage">
+      <section class="pin" id="pin" aria-labelledby="h1">
+        <video id="v" muted loop playsinline preload="none" poster="flatlay.webp" aria-hidden="true"><source src="catering-loop-15s.mp4" type="video/mp4"></video>
+        <div class="win" id="w1"><img src="door-night.webp" style="object-position:100% 50%" alt="Our front door on Walnut Street at night, propped open, chalkboards on the brick either side"></div>
+        <div class="win" id="w2"><img src="tacos-tray.webp" alt="Six tacos on a wooden board, topped with grilled pineapple and cilantro"></div>
+        <div class="win" id="w3"><img src="margs-five.webp" style="object-position:62% 50%" alt="Margaritas with salted rims lined up on a wooden table against our plank wall, pale lime through deep red"></div>
+        <span class="bar" id="b1" aria-hidden="true"></span><span class="bar" id="b2" aria-hidden="true"></span><span class="bar" id="b3" aria-hidden="true"></span>
+        <div class="title" id="title">
+          <h1 id="h1">Tacos to the people.</h1>
+          <a data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc">Catering request<span aria-hidden="true" style="margin-left:8px;font-size:0.9em">↗</span></a>
+        </div>
+        <a class="w" id="l1" data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc"><b>Pick it up.</b><span>$19 a guest</span><i>Request pick-up ↗</i></a>
+        <a class="w" id="l2" data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc"><b>We drop it off.</b><span>$22 a guest</span><i>Request drop-off ↗</i></a>
+        <a class="w" id="l3" data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc"><b>We take care of everything.</b><span>$25 a guest</span><i>Request full service ↗</i></a>
+        <button class="cue" id="cue" type="button"><svg viewBox="-4 -4 108 166" aria-hidden="true"><polygon points="70,0 91,0 21,152 0,152"/></svg>Three ways to do it</button>
+        <button class="pause" id="pz" type="button" aria-pressed="false">Pause film</button>
+      </section>
+    </div>
+    <section class="comes" aria-label="What comes with every order">
+      <p class="say">Every way comes with chicken, pork shoulder, grilled veggies, chips and salsa.</p>
+      <h2 class="addh">Add to it.</h2>
+      <ul class="adds">
+        <li><span>Rice</span><span>$2.50 a head</span></li>
+        <li><span>Black beans</span><span>$2.50 a head</span></li>
+        <li><span>Guacamole</span><span>$5 a head</span></li>
+        <li><span>Queso dip</span><span>$5 a head</span></li>
+        <li><span>Salad</span><span>$5 a head</span></li>
+        <li><span>House margarita, 1 litre, six servings</span><span>$50</span></li>
+      </ul>
+      <p class="fine">The veggies are vegan. Tax and a 20% gratuity are added to every order.</p>
+      <a class="go" data-link="catering" href="https://www.toasttab.com/invoice/lead?rx=1db4bb71-0420-4f77-abbb-000d1cca50cd&amp;ot=382e0713-166f-4ddb-bcc3-06c10ff3ddbc">Catering request<span aria-hidden="true" style="margin-left:8px;font-size:0.9em">↗</span></a><span class="lv">Opens our request form on Toast.</span>
+    </section>
+    <p class="close">Want the room instead?<svg class="sl" viewBox="-4 -4 108 166" aria-hidden="true"><polygon class="offset" points="75,5 96,5 26,157 5,157"/><polygon class="face" points="70,0 91,0 21,152 0,152"/></svg><a href="events.html">Private events</a></p>
+  </main>
+  
+
+<!-- scripts -->
+<script>
+(function(){
+  var H=document.documentElement, v=document.getElementById('v'), pz=document.getElementById('pz');
+  var calm=matchMedia('(prefers-reduced-motion: reduce)').matches||H.classList.contains('m');
+  function setv(on){ if(on){v.play();}else{v.pause();} pz.textContent=on?'Pause film':'Play film'; pz.setAttribute('aria-pressed', String(!on)); }
+  setv(!calm); pz.addEventListener('click', function(){ setv(v.paused); });
+  var stage=document.getElementById('stage'), pin=document.getElementById('pin'), hdr=document.querySelector('header'), title=document.getElementById('title');
+  var W=[1,2,3].map(function(i){return document.getElementById('w'+i);}), B=[1,2,3].map(function(i){return document.getElementById('b'+i);}), L=[1,2,3].map(function(i){return document.getElementById('l'+i);});
+  var h=804, s=370, E=[];
+  function size(){ var z=H.style.zoom; H.style.zoom='1'; var ch=H.clientHeight, cw=H.clientWidth; H.style.zoom=z;
+    h=Math.max(560, Math.round(ch/(cw/1600))-96); H.style.setProperty('--H', h+'px'); s=h*70/152;
+    /* resting edges, as [top x, bottom x] of each bar's left side */
+    E=[[-28,-s-28],[533+s/2-14,533-s/2-14],[1067+s/2-14,1067-s/2-14],[1600+s,1600]];
+    var bx=[[0,533+s/2],[533-s/2,1067+s/2],[1067-s/2,1600]];
+    W.forEach(function(w,i){ var im=w.firstElementChild; im.style.left=bx[i][0]+'px'; im.style.width=(bx[i][1]-bx[i][0])+'px'; });
+    L[0].style.left='64px'; L[1].style.left=(E[1][1]+140)+'px'; L[2].style.left=(E[2][1]+140)+'px';
+    draw(); }
+  function ease(x){ return x<0?0:x>1?1:x*x*(3-2*x); }
+  function draw(){ var p=1;
+    if(!calm){ var r=stage.getBoundingClientRect(), top=hdr.getBoundingClientRect().bottom, ph=pin.getBoundingClientRect().height; p=Math.min(1,Math.max(0,(top-r.top)/(r.height-ph))); }
+    var t=1-ease(p/0.14); H.style.setProperty('--t', calm?1:t); H.style.setProperty('--push', calm?1:(1+0.10*ease(p/0.3)));
+    title.style.pointerEvents=t<0.2?'none':'auto'; cue.style.pointerEvents=pz.style.pointerEvents=t<0.2?'none':'auto'; cue.tabIndex=pz.tabIndex=t<0.2?-1:0;
+    var q=[ease((p-0.10)/0.26), ease((p-0.38)/0.26), ease((p-0.66)/0.26)];
+    for(var i=0;i<3;i++){ var a=E[i], b=E[i+1], et=a[0]+(b[0]-a[0])*q[i], eb=a[1]+(b[1]-a[1])*q[i];
+      var lt=i?E[i][0]+28:-10, lb=i?E[i][1]+28:-10;
+      W[i].style.clipPath='polygon('+lt+'px 0,'+Math.max(et,lt)+'px 0,'+Math.max(eb,lb)+'px 100%,'+lb+'px 100%)';
+      B[i].style.clipPath='polygon('+et+'px 0,'+(et+28)+'px 0,'+(eb+28)+'px 100%,'+eb+'px 100%)';
+      B[i].style.visibility=q[i]>0?'visible':'hidden';
+      L[i].classList.toggle('on', q[i]>0.85); L[i].tabIndex=q[i]>0.85?0:-1; }
+  }
+  var cue=document.getElementById('cue'); cue.addEventListener('click', function(){ var r=stage.getBoundingClientRect(), top=hdr.getBoundingClientRect().bottom, ph=pin.getBoundingClientRect().height; scrollBy({top:(r.height-ph)-(top-r.top), behavior:'smooth'}); });
+  if(calm){ H.classList.add('calm'); stage.parentNode.insertBefore(title, stage); }
+  var tick=false; addEventListener('scroll', function(){ if(!tick){ tick=true; requestAnimationFrame(function(){ tick=false; draw(); }); } }, {passive:true});
+  addEventListener('resize', size); size();
+})();
+</script>

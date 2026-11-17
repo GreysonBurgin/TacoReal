@@ -1,0 +1,221 @@
+/* T/aco at phone width. Everything here is scoped to html.m, which the page sets when the window is 760px or narrower.
+   Above that, the desktop layout scales to fit and none of this applies. */
+.navtog { display: none; }
+html.m .page { width: 100%; }
+html.m img { max-width: 100%; }
+
+/* header: logo, a Menu button, Order. the links drop down as a list. */
+html.m .page > header { height: 64px; padding: 0 16px; gap: 10px; }
+html.m .page > header img { height: 30px; }
+html.m .page > header .hrs { display: none; }
+html.m .page > header .side { gap: 0; margin-left: auto; }
+html.m .page > header .cta { padding: 10px 12px; font-size: 14px; white-space: nowrap; }
+html.m .navtog { display: block; order: 3; font: inherit; font-size: 14px; font-weight: 500; background: none; color: var(--ink, #2b1a0e); border: 1.5px solid var(--ink, #2b1a0e); padding: 9px 12px; min-height: 40px; cursor: pointer; }
+html.m .navtog:focus-visible { outline: 3px solid #3f6b36; outline-offset: 3px; }
+html.m .page > header nav { display: none; position: absolute; left: 0; right: 0; top: 64px; background: var(--surface, #fbf4e8); flex-direction: column; align-items: stretch; gap: 0; padding: 4px 16px 14px; border-bottom: 1px solid var(--ink, #2b1a0e); font-size: 19px; }
+html.m .page > header.nav-open nav { display: flex; }
+html.m .page > header nav .sl { display: none; }
+html.m .page > header nav a { padding: 14px 0; border-bottom: 1px solid var(--line, #e3d5be); }
+html.m .page > header nav a[aria-current] { border-bottom-color: var(--line, #e3d5be); font-family: "Sancreek", serif; }
+
+/* footer: logo, then Visit and Hours side by side, then Explore */
+html.m .site-foot { padding: 36px 20px 22px; }
+html.m .site-foot .cols { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+html.m .site-foot .brand, html.m .site-foot nav { grid-column: 1 / -1; }
+html.m .site-foot .cols p { white-space: normal; font-size: 15px; }
+html.m .site-foot .s { margin: 0 6px; }
+html.m .site-foot .fine { margin-top: 28px; font-size: 13px; }
+html.m .site-foot .fine a { margin-left: 0; display: inline-block; }
+html.m .landed { animation: none; }
+
+/* ---------- Home ---------- */
+html.m .p-index .hero { height: auto; display: flex; flex-direction: column; }
+html.m .p-index .hero .ph { position: relative; left: 0; width: 100%; }
+html.m .p-index .hero .left { height: 300px; clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%); order: 1; }
+html.m .p-index .hero .quote { order: 2; position: static; transform: none; white-space: normal; text-align: center; font-size: 30px; line-height: 1.1; padding: 22px 20px 14px; clip-path: none; }
+html.m .p-index .hero .sub { order: 3; position: static; flex-direction: column; gap: 14px; padding: 0 20px 26px; }
+html.m .p-index .hero .meta { order: 0; font-size: 12px; }
+html.m .p-index .hero .right { order: 4; height: 240px; clip-path: polygon(0 14%, 100% 0, 100% 100%, 0 100%); }
+html.m .p-index .hero .l, html.m .p-index .hero .r { font-size: 18px; }
+html.m .p-index .hero .l { left: 16px; top: 16px; }
+html.m .p-index .hero .r { right: 16px; top: auto; bottom: 16px; }
+
+html.m .p-index .open { height: auto; display: block; }
+html.m .p-index .open-text { padding: 44px 20px 0; }
+html.m .p-index .open h2 { font-size: 38px; max-width: none; }
+html.m .p-index .open .lede { font-size: 18px; max-width: none; margin-bottom: 24px; }
+html.m .p-index .btns { flex-wrap: wrap; gap: 12px; margin-top: 0; }
+html.m .p-index .btn { padding: 14px 18px; font-size: 16px; }
+html.m .p-index .hh { position: static; width: auto; margin-top: 36px; }
+html.m .p-index .hh .hhh { font-size: 28px; }
+html.m .p-index .beats { display: none; }
+html.m .p-index .cuts { height: auto; margin-top: 32px; }
+html.m .p-index .cut-a { position: relative; inset: auto; height: 340px; background: url("cilantro.webp") 50% 30% / cover no-repeat; clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%); }
+html.m .p-index .cut-b, html.m .p-index .leaves { display: none; }
+
+html.m .p-index .doors { padding: 44px 20px 48px; }
+html.m .p-index .doors .row { flex-wrap: wrap; gap: 8px 16px; margin-bottom: 26px; }
+html.m .p-index .doors .row .to { display: none; }
+html.m .p-index .doors h2 { font-size: 30px; flex-basis: 100%; }
+html.m .p-index .grid { grid-template-columns: 1fr; gap: 36px; }
+html.m .p-index .door { grid-template-rows: 220px auto; }
+html.m .p-index .door .frame { height: 220px; }
+html.m .p-index .door h3 { font-size: 26px; }
+html.m .p-index .door p { font-size: 17px; }
+
+html.m #location { scroll-margin-top: 64px; }
+html.m #location .big { padding-top: 32px; }
+html.m #location .sk { position: static; width: 190px; margin: 0 auto 10px; }
+html.m #location h2 { font-size: 15.5vw; padding: 0 20px; white-space: nowrap; }
+html.m #location .row { flex-direction: column; align-items: flex-start; gap: 12px; padding: 0 20px; margin: 18px 0 28px; font-size: 18px; }
+html.m #location .row .sl { display: none; }
+html.m #location .hours { grid-template-columns: 1fr; gap: 22px; margin: 0 20px 32px; padding-top: 24px; }
+html.m #location .hours dd { font-size: 32px; }
+html.m #location .reserve { margin: 0 20px 36px; padding-top: 26px; }
+html.m #location .reserve h3 { font-size: 28px; }
+html.m #location .reserve p { font-size: 17px; }
+html.m #location .street { width: auto; margin: 0; }
+html.m #location .street .ig b { font-size: 34px; }
+html.m #location .street .ig > span { font-size: 16px; }
+html.m .p-index .mark { flex-wrap: wrap; gap: 6px 12px; font-size: 26px; }
+html.m .p-index .mark::before { display: none; }
+html.m .p-index .mark svg { position: static; transform: none; height: 22px; }
+html.m .p-index .mark small { font-size: 12px; }
+html.m .p-index .hero .l, html.m .p-index .hero .r { z-index: 5; }
+html.m #location .hours dd.sub { font-size: 15px; }
+html.m .site-foot .brand img { height: 36px; }
+html.m .site-foot .cols p .s { display: none; }
+html.m .site-foot .cols p a { display: inline-block; margin-right: 14px; }
+
+/* ---------- Menu ---------- */
+html.m .p-menu .paper { padding: 32px 20px 0; }
+html.m .p-menu .paper h1 span { font-size: 23vw; -webkit-text-stroke-width: 2px; text-shadow: 4px 4px 0 var(--sage); }
+html.m .p-menu .paper .tag { font-size: 20px; margin: 18px 0 10px; }
+html.m .p-menu .paper .intro { font-size: 15px; }
+html.m .p-menu .paper .orn { margin-top: 26px; }
+html.m .p-menu .row.c { padding: 20px 16px 0; flex-wrap: wrap; justify-content: center; gap: 4px 0; font-size: 16px; }
+html.m .p-menu .row.c .sl { display: none; }
+html.m .p-menu .row.c a { padding: 9px 11px; }
+html.m .p-menu .cstart { padding-top: 18px; }
+html.m .p-menu .menu { padding: 8px 20px 40px !important; }
+html.m .p-menu .grp { padding: 34px 0 30px; scroll-margin-top: 72px; }
+html.m .p-menu .grp h2 { font-size: 40px; margin-bottom: 26px; }
+html.m .p-menu .items { grid-template-columns: 1fr; gap: 24px; }
+html.m .p-menu .items.compact { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+html.m .p-menu .it h3 { font-size: 21px; }
+html.m .p-menu .compact .it h3 { font-size: 16px; }
+html.m .p-menu .it .p { display: inline-block; }
+html.m .p-menu .it .ds { font-size: 15px; }
+html.m .p-menu .barnote { font-size: 15px; }
+html.m .p-menu .fine { font-size: 14px; padding-top: 20px; }
+html.m .p-menu .top { height: 330px; margin-top: 0; }
+html.m .p-menu .top .table { width: 760px; max-width: none; left: 50%; margin-left: -520px; }
+html.m .p-menu .order-here { top: 44px; }
+html.m .p-menu .order-here .btn { font-size: 17px; padding: 14px 20px; }
+html.m .p-menu .vocab { flex-wrap: wrap; justify-content: center; gap: 6px 18px; padding: 24px 20px 32px; font-size: 22px; }
+html.m .p-menu .top { height: 310px; }
+html.m .p-menu .top .table { width: 580px; left: auto; right: -8px; margin-left: 0; }
+html.m .p-menu .order-here { top: 18px; }
+
+/* ---------- Catering: no pinned scroll on a phone. the line, then the three ways stacked. ---------- */
+html.m .p-catering .title { padding: 84px 20px; background: linear-gradient(rgba(20,12,6,0.58), rgba(20,12,6,0.58)), url("flatlay.webp") center / cover no-repeat; }
+html.m .p-catering .title h1 { font-size: 15vw; white-space: normal; text-shadow: 3px 3px 0 var(--ink); }
+html.m .p-catering .title a { margin-top: 26px; }
+html.m .p-catering .pin { display: grid; grid-template-columns: 1fr; height: auto; }
+html.m .p-catering .pin video, html.m .p-catering .bar, html.m .p-catering .cue, html.m .p-catering .pause { display: none; }
+html.m .p-catering .win { position: relative; inset: auto; grid-column: 1; height: 300px; clip-path: none !important; }
+html.m .p-catering .win img { left: 0 !important; width: 100% !important; }
+html.m .p-catering #w1, html.m .p-catering #l1 { grid-row: 1; }
+html.m .p-catering #w2, html.m .p-catering #l2 { grid-row: 2; }
+html.m .p-catering #w3, html.m .p-catering #l3 { grid-row: 3; }
+html.m .p-catering .w { position: relative; grid-column: 1; left: auto !important; bottom: auto; align-self: end; width: auto; padding: 0 20px 22px; opacity: 1; transform: none; }
+html.m .p-catering .w b { font-size: 32px; }
+html.m .p-catering .comes { padding: 52px 20px 44px; }
+html.m .p-catering .say { font-size: 29px; }
+html.m .p-catering .fine { font-size: 15px; }
+html.m .p-catering .close { padding: 28px 20px 40px; flex-wrap: wrap; gap: 10px 14px; font-size: 17px; }
+
+/* ---------- Private Events ---------- */
+html.m .p-events .act1 { display: block; height: auto; }
+html.m .p-events .act1 .text { padding: 36px 20px 32px; }
+html.m .p-events .act1 h1 { font-size: 22px; max-width: none; }
+html.m .p-events .act1 h1 em { font-size: 36px; display: block; margin-bottom: 10px; }
+html.m .p-events .act1 h1 br { display: none; }
+html.m .p-events .act1 p { font-size: 17px; max-width: none; }
+html.m .p-events .act1 .room { height: 280px; clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 100%); }
+html.m .p-events .count { display: none; }
+html.m .p-events .act { height: 440px; }
+html.m .p-events .act .copy, html.m .p-events .act .copy.right, html.m .p-events .act .copy.rip { left: 20px; right: 20px; bottom: 26px; width: auto; text-align: left; }
+html.m .p-events .act .copy p { margin-left: 0; font-size: 17px; }
+html.m .p-events .act .copy h2 { font-size: 30px; }
+html.m .p-events .paper { grid-template-columns: 1fr; gap: 28px; padding: 44px 20px; }
+html.m .p-events .paper h2 { font-size: 30px; }
+html.m .p-events .paper p, html.m .p-events .paper li { font-size: 17px; }
+html.m .p-events .paper li { gap: 14px; }
+html.m .p-events .close { padding: 44px 16px; }
+html.m .p-events .sheet { width: auto; padding: 36px 22px 40px; }
+html.m .p-events .sheet h2 { font-size: 32px; }
+html.m .p-events .sheet .btn { display: block; }
+html.m .p-events .sheet .btn.secondary { margin: 12px 0 0; }
+
+/* ---------- Famous for Something: the doors stand either side of the line, no scroll animation ---------- */
+html.m .p-about .open { height: auto; grid-template-columns: 1fr 1fr; align-items: stretch; }
+html.m .p-about .open-text { grid-column: 1 / -1; order: -1; padding: 40px 20px 32px; animation: none !important; }
+html.m .p-about .open h1 em { font-size: 15vw; }
+html.m .p-about .open .board { width: 100%; height: 300px; animation: none !important; }
+html.m .p-about .uncover { padding: 28px 12px 40px; background: var(--ink) url("mural.webp") 50% 50% / cover no-repeat scroll; }
+html.m .p-about .sheet, html.m .p-about .sheet.menu { width: auto; padding: 36px 22px 34px; animation: none !important; }
+html.m .p-about .sheet::before { inset: 8px; }
+html.m .p-about .mhead img { height: 44px; }
+html.m .p-about .mhead .tag { font-size: 17px; }
+html.m .p-about .sec { font-size: 34px; padding: 24px 0; }
+html.m .p-about .sec span { font-size: 20px; vertical-align: 10px; }
+html.m .p-about .dishes { grid-template-columns: 1fr; gap: 20px; }
+html.m .p-about .dish { padding: 6px 0; min-height: 44px; }
+html.m .p-about .nm { font-size: 21px; }
+html.m .p-about .plate { height: 220px; gap: 8px; margin: 26px 0 32px; }
+html.m .p-about .plate img { height: 220px; }
+html.m .p-about .reg blockquote p { font-size: 24px; }
+html.m .p-about .foot { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+/* ---------- Secret menu ---------- */
+html.m .p-secret .dark { height: 520px; }
+html.m .p-secret .dark h1 { font-size: 72px; }
+html.m .p-secret .dark p { font-size: 18px; }
+html.m .p-secret .list { padding: 52px 20px 60px; }
+html.m .p-secret .sheet { width: auto; }
+html.m .p-secret .sheet h2 { font-size: 30px; }
+html.m .p-secret ul.items { margin-bottom: 44px; }
+html.m .p-secret .item .name { font-size: 22px; }
+html.m .p-secret .item .desc { font-size: 16px; }
+html.m .p-secret .rules { grid-template-columns: 1fr; gap: 28px; padding-top: 30px; }
+html.m .p-secret .out { flex-direction: column; align-items: flex-start; gap: 20px; padding: 44px 20px; }
+html.m .p-secret .out .slash { display: none; }
+html.m .p-secret .out h2 { font-size: 30px; }
+html.m .p-secret .out p { font-size: 17px; }
+
+/* comfortable tap targets */
+html.m .site-foot p a { padding: 5px 0; }
+html.m .site-foot .cols p { line-height: 2.1; }
+html.m .p-about .regnote button { padding: 10px 6px 8px; }
+html.m .p-catering .close a { padding: 8px 0; }
+
+/* Famous for Something: no hover on a phone, so each line shows it can be picked, and its photographs arrive right under it */
+html.m .p-about .pick { font-size: 15px; margin: -6px 0 22px; }
+html.m .p-about .dish .nm { text-decoration-style: dotted; text-decoration-color: var(--ink-muted); }
+html.m .p-about .dish[aria-pressed=true] .nm { text-decoration-style: solid; text-decoration-color: var(--ink); }
+html.m .p-about .dishes .plate { margin: 14px 0 4px; }
+html.m .p-catering .addh { font-size: 26px; margin-top: 40px; }
+html.m .p-catering .adds li { font-size: 17px; gap: 14px; }
+
+/* skip link: hidden until a keyboard user tabs to it, then jumps past the header to the page's main content */
+.skip { position: absolute; left: 16px; top: -120px; z-index: 100; background: #2b1a0e; color: #fbf4e8; padding: 12px 18px; border-radius: 4px; font: 500 16px/1.2 "DM Sans", system-ui, sans-serif; text-decoration: none; }
+.skip:focus { top: 12px; outline: 3px solid #91ac7f; outline-offset: 2px; }
+#main { scroll-margin-top: 96px; }
+html.m #main { scroll-margin-top: 64px; }
+
+/* announcement: one line across the top of every page, set in site-data.js */
+#announce { background: #2b1a0e; color: #fbf4e8; text-align: center; padding: 12px 24px; font: 500 16px/1.4 "DM Sans", system-ui, sans-serif; }
+#announce a { color: #fbf4e8; text-underline-offset: 3px; margin-left: 6px; }
+#announce a:focus-visible { outline: 3px solid #91ac7f; outline-offset: 3px; }
+html.m #announce { font-size: 15px; padding: 10px 16px; }

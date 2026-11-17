@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Preview — T/aco website editor</title>
+<style>
+  @font-face { font-family: "DM Sans"; src: url("DMSans.woff") format("woff"); font-weight: 100 900; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #d9cfbf; color: #2b1a0e; font: 15px/1.3 "DM Sans", system-ui, sans-serif; overflow: hidden; }
+  .bar { height: 56px; background: #2b1a0e; color: #fbf4e8; display: flex; align-items: center; gap: 14px; padding: 0 16px; }
+  .bar b { font-weight: 500; white-space: nowrap; }
+  .bar .note { color: #d9c9ac; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .seg { display: flex; margin-left: auto; border: 2px solid #fbf4e8; }
+  .seg button { background: none; border: 0; color: #fbf4e8; font: inherit; font-weight: 500; padding: 7px 14px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: #fbf4e8; color: #2b1a0e; }
+  select, .x { font: inherit; background: #2b1a0e; color: #fbf4e8; border: 2px solid #fbf4e8; padding: 7px 10px; cursor: pointer; }
+  :focus-visible { outline: 3px solid #91ac7f; outline-offset: 2px; }
+  .stage { position: absolute; top: 56px; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-start; justify-content: center; overflow: hidden; }
+  .device { transform-origin: top center; background: #fbf4e8; flex: none; }
+  .device.framed { margin-top: 18px; border: 10px solid #2b2f36; border-radius: 34px; overflow: hidden; box-shadow: 0 18px 50px rgba(43,26,14,.3); }
+  iframe { display: block; border: 0; width: 100%; height: 100%; background: #fbf4e8; }
+  @media (max-width: 760px) { .bar .note { display: none; } }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>Preview</b><span class="note">Your unpublished changes. Guests don’t see this until you publish.</span>
+  <div class="seg" role="group" aria-label="Screen size">
+    <button type="button" data-d="desktop" aria-pressed="true">Desktop</button>
+    <button type="button" data-d="tablet" aria-pressed="false">Tablet</button>
+    <button type="button" data-d="phone" aria-pressed="false">iPhone</button>
+  </div>
+  <label for="page" style="position:absolute;left:-9999px">Page</label>
+  <select id="page">
+    <option value="index.html">Home</option><option value="menu.html">Menu</option><option value="index.html#location">Location &amp; Hours</option><option value="catering.html">Catering</option>
+    <option value="events.html">Private Events</option><option value="about.html">Famous for Something</option><option value="secret.html">Secret menu</option>
+  </select>
+  <button type="button" class="x" id="close">Close</button>
+</div>
+<div class="stage" id="stage"><div class="device" id="device"><iframe id="frame" title="The website with your unpublished changes"></iframe></div></div>
+<script>
+(function(){
+  var SIZES={ desktop:null, tablet:[820,1180], phone:[390,844] }, dev='desktop', page='index.html';
+  var stage=document.getElementById('stage'), device=document.getElementById('device'), frame=document.getElementById('frame'), sel=document.getElementById('page');
+  try{ sessionStorage.setItem('taco-preview','draft'); dev=sessionStorage.getItem('taco-preview-device')||dev; page=sessionStorage.getItem('taco-preview-page')||page; }catch(e){}
+  sel.value=page; if(sel.value!==page){ page='index.html'; sel.value=page; }
+  function fit(){
+    var s=SIZES[dev], W=stage.clientWidth, Hh=stage.clientHeight;
+    if(!s){ device.className='device'; device.style.cssText='width:'+W+'px;height:'+Hh+'px'; return; }
+    var k=Math.min(1, (Hh-36)/(s[1]+20), (W-36)/(s[0]+20));
+    device.className='device framed'; device.style.cssText='width:'+(s[0]+20)+'px;height:'+(s[1]+20)+'px;transform:scale('+k.toFixed(4)+')';
+  }
+  function load(){ var parts=page.split('#'); frame.src=parts[0]+'?preview=draft&t='+Date.now()+(parts[1]?'#'+parts[1]:''); }
+  function pick(d){ dev=d; try{ sessionStorage.setItem('taco-preview-device', d); }catch(e){}
+    [].forEach.call(document.querySelectorAll('.seg button'), function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-d')===d)); }); fit(); load(); }
+  [].forEach.call(document.querySelectorAll('.seg button'), function(b){ b.addEventListener('click', function(){ pick(b.getAttribute('data-d')); }); });
+  function keep(){ try{ sessionStorage.setItem('taco-preview-page', page); }catch(e){} }
+  sel.addEventListener('change', function(){ page=sel.value; keep(); load(); });
+  frame.addEventListener('load', function(){ try{ var f=frame.contentWindow.location.pathname.split('/').pop()||'index.html'; if(page.split('#')[0]!==f){ page=f; sel.value=f; keep(); } }catch(e){} });
+  document.getElementById('close').addEventListener('click', function(){ window.close(); });
+  addEventListener('resize', fit);
+  addEventListener('storage', function(e){ if(e.key==='taco-draft') load(); });   // the editor saved a newer draft: show it
+  pick(dev);
+})();
+</script>
+</body>
+</html>

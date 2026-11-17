@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+{{meta}}
+<script>(function(){var h=document.documentElement;function z(){h.style.zoom='1';var w=h.clientWidth,m=w<=760;h.classList.toggle('m',m);h.style.zoom=m?'1':(w/1600).toFixed(4);}z();addEventListener('resize',z);})();</script>
+<link rel="stylesheet" href="{{site.css}}">
+<link rel="stylesheet" href="{{page.css}}">
+</head>
+<body class="p-{{page}}">
+<a class="skip" href="#main">Skip to main content</a>
+<div class="page">
+  {{header}}
+{{main}}
+  {{footer}}
+</div>
+{{scripts}}
+</body>
+</html>
