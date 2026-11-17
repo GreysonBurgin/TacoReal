@@ -22,7 +22,6 @@ Builds the site into `dist/` and serves it at http://localhost:8080. Needs only 
 | `src/static/` | Images, fonts, video |
 | `src/editor/` | The owner's editor |
 | `setup/` | How to host it, connect the editor, and a one-page guide for the owner |
-| `loop/` | Project notes |
 
 ## Pages
 
