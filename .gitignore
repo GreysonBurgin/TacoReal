@@ -15,3 +15,5 @@ _legacy/
 _deck/
 deck-assets/
 loop/
+.sheet-facts.json
+__pycache__/

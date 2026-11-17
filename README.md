@@ -22,6 +22,7 @@ Builds the site into `dist/` and serves it at http://localhost:8080. Needs only 
 | `src/static/` | Images, fonts, video |
 | `src/editor/` | The owner's editor |
 | `tests/` | `python3 tests/check.py` builds the site and checks it; it also runs before every publish |
+| `tools/` | `sheet-facts.js`: reads the owner's sheet for the hourly rebuild |
 | `setup/` | How to host it, connect the editor, and a one-page guide for the owner |
 
 ## Pages

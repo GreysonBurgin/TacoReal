@@ -5,6 +5,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '23 * * * *'   # every hour: rebuild with the facts in the owner's sheet, so they are in the pages themselves
 permissions:
   contents: read
   pages: write
@@ -20,7 +22,7 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: python3 tests/check.py   # builds the site and checks it; a failure stops here and the site already online is left alone
+      - run: python3 tests/check.py --from-sheet   # reads the owner's sheet (falls back to src/data if it cannot), builds the site and checks it; a failure stops here and the site already online is left alone
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

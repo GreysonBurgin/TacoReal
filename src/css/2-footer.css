@@ -13,4 +13,5 @@
   .site-foot .s { margin: 0 10px; color: #d9c9ac; }
   .site-foot .fine { font-size: 14px; line-height: 1.5; color: #d9c9ac; margin-top: 40px; padding-top: 18px; border-top: 1px solid rgba(251,244,232,0.22); }
   .site-foot .fine a { color: #fbf4e8; margin-left: 8px; }
+  .site-foot .fine.credit { margin-top: 8px; padding-top: 0; border-top: 0; }   /* who made the pictures, and which are generated */
   @media (max-width: 700px) { .site-foot .cols { grid-template-columns: 1fr 1fr; } .site-foot .brand, .site-foot nav { grid-column: 1 / -1; } }

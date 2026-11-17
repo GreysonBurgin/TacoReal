@@ -5,8 +5,17 @@ A failure stops the publish step, so the site that is already online stays as it
 import json, os, re, shutil, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT)
 import build
+node = shutil.which('node')
+if '--from-sheet' in sys.argv:      # the scheduled rebuild: read the owner's sheet first. Any trouble, and the site is built from src/data as usual.
+    facts = os.path.join(ROOT, '.sheet-facts.json')
+    try:
+        r = subprocess.run([node, os.path.join(ROOT, 'tools', 'sheet-facts.js')], capture_output=True, text=True, timeout=60) if node else None
+        if r and r.returncode == 0 and r.stdout.strip():
+            open(facts, 'w', encoding='utf-8').write(r.stdout); os.environ['TACO_FACTS'] = facts
+        else: print('Sheet not read (%s); building from src/data.' % ((r.stderr.strip() or 'no answer') if r else 'Node is not installed'))
+    except (subprocess.TimeoutExpired, OSError) as e: print('Sheet not read (%s); building from src/data.' % e)
 pages = build.build(); DIST = build.DIST
-site = json.load(open(os.path.join(ROOT, 'src', 'data', 'site.json'), encoding='utf-8')); menu = json.load(open(os.path.join(ROOT, 'src', 'data', 'menu.json'), encoding='utf-8'))
+site, menu = build.load_data()
 files = set(os.listdir(DIST)); bad = []
 def check(ok, msg):
     if not ok: bad.append(msg)
@@ -45,7 +54,6 @@ check(ld['telephone'] == site['info']['phone'] and len(ld['openingHoursSpecifica
 check(build.clock(1440, True) == '12 am' and build.clock(720, True) == '12 pm' and build.clock(1290) == '9:30', 'build.py: times are written wrongly')
 gs = open(os.path.join(ROOT, 'setup', 'editor-backend.gs'), encoding='utf-8').read()
 check("var PASSCODE = 'change-me-before-deploying';" in gs, 'setup/editor-backend.gs: a real passcode must never be saved in the repository')
-node = shutil.which('node')
 for t in ('backend.test.js', 'sheet.test.js'):
     if not node: print('Node is not installed: skipped tests/%s' % t); continue
     r = subprocess.run([node, os.path.join(ROOT, 'tests', t)], capture_output=True, text=True)

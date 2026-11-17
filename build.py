@@ -189,7 +189,7 @@ def build():
             if folder == 'editor' and f.endswith('.html'): write(f, size_images(read(folder, f)))
             else: shutil.copyfile(os.path.join(SRC, folder, f), os.path.join(DIST, f))
 
-    site = json.loads(read('data', 'site.json')); menu = json.loads(read('data', 'menu.json'))
+    site, menu = load_data()
     url = {
         'site-data.js': write('site-data.js', '/* Made by build.py from src/data/site.json. Edit that file, not this one. */\nwindow.TACO_SITE = ' + json.dumps(site, indent=2, ensure_ascii=False) + ';\n'),
         'menu-data.js': write('menu-data.js', '/* Made by build.py from src/data/menu.json. Edit that file, not this one. */\nwindow.TACO_MENU = ' + json.dumps(menu, indent=2, ensure_ascii=False) + ';\n'),
@@ -237,6 +237,43 @@ def build():
              and f not in url and f not in ('robots.txt', 'sitemap.xml') and not f.startswith('page-') and f[:-5] not in pages]
     if stale: sys.exit('Old files could not be removed from dist/ and would be published: %s. Delete the dist folder and build again.' % ', '.join(stale))
     return pages
+
+def usable(facts):
+    """True if facts read from the owner's sheet are complete enough to write into the pages."""
+    try:
+        info, links, hours = facts['info'], facts['links'], facts['hours']
+        if not (info.get('phone') and info.get('street') and info.get('city') and info.get('streetShort')): return False
+        if not all(re.match(r'https?://\S+$', str(v)) for v in links.values()) or not links: return False
+        if len(hours) != 7 or [h['day'] for h in hours] != list(SHORT): return False
+        if not all(h.get('closed') or (mins(h.get('open')) is not None and mins(h.get('close')) is not None) for h in hours): return False
+        for g in facts.get('menu', {}).get('groups', []):
+            if not (re.match(r'[a-z0-9-]+$', g['id']) and g['name'] and g['items']): return False
+            for it in g['items']:
+                p = it.get('price') or g.get('price')
+                if not it.get('name') or not isinstance(p, (int, float)) or p < 0: return False
+        return True
+    except (KeyError, TypeError, AttributeError): return False
+
+def load_data():
+    """site.json and menu.json; with TACO_FACTS set (the scheduled rebuild), the owner's sheet is laid over them if it is usable."""
+    site = json.loads(read('data', 'site.json')); menu = json.loads(read('data', 'menu.json'))
+    path = os.environ.get('TACO_FACTS')
+    if path:
+        try:
+            with open(path, encoding='utf-8') as f: facts = json.load(f)
+        except (OSError, ValueError): facts = None
+        if facts and usable(facts):
+            site['info'].update({k: facts['info'][k] for k in ('street', 'streetShort', 'city', 'phone')})
+            site['links'].update(facts['links']); site['hours'] = facts['hours']
+            if facts.get('pricesChecked'): site['pricesChecked'] = facts['pricesChecked']
+            groups = facts.get('menu', {}).get('groups')
+            if groups:
+                for g in groups:
+                    for it in g['items']: it.pop('soldOut', None)     # "sold out today" is only ever shown live, never baked in
+                menu['groups'] = groups
+            print('Facts from the owner\'s sheet were written into the pages.')
+        else: print('The sheet\'s facts were not usable; built from src/data instead.')
+    return site, menu
 
 def newest():
     return max(os.path.getmtime(os.path.join(d, f)) for d, _, fs in os.walk(SRC) for f in fs)
