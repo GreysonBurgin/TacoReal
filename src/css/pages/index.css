@@ -1,7 +1,7 @@
 /* location and hours, as a stop on the home page: the address, enormous, and the map under it */
 #location { border-top: 1px solid var(--line); scroll-margin-top: 96px; position: relative; z-index: 1; background: var(--surface); }
 #location .big { padding: 56px 0 0; position: relative; }
-#location .sk { position: absolute; right: 120px; top: 30px; width: 300px; }
+#location .sk { position: absolute; right: 56px; top: 30px; width: 300px; }
 #location .sk img { width: 100%; display: block; }
 #location h2 { font-family: var(--display); font-weight: 400; font-size: 168px; line-height: 0.95; margin: 0; padding-left: 160px; }
 #location .row { display: flex; padding-left: 160px; gap: 36px; align-items: center; margin: 22px 0 36px; font-size: 20px; }
