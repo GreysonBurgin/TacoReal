@@ -45,7 +45,7 @@
 
   var timer;
   function applyOpenLine(data){
-    var els=all('[data-open]'), w=week(data); if(!els.length||w.length!==7) return;
+    var els=all('[data-open]'), w=week(data); if((!els.length&&!all('[data-today]').length)||w.length!==7) return;
     var IDX={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}, fmt;
     try{ fmt=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',weekday:'short',hour:'numeric',minute:'numeric',hourCycle:'h23'}); }catch(e){ return; }
     function tick(){
@@ -56,6 +56,8 @@
       else if(!t.closed&&now<t.o) text='Opens at '+clock(t.o)+' today';
       else if(!n.closed) text='Closed till '+clock(n.o)+' tomorrow';
       else text=t.closed?'Closed today':'Closed now';
+      var day=t.closed?n:t;   // the day's markers on Home: today's opening and closing time (tomorrow's, on a closed day)
+      if(!day.closed){ all('[data-today="open"]').forEach(function(e){ e.textContent=clock(day.o,true); }); all('[data-today="close"]').forEach(function(e){ e.textContent=clock(day.c,true); }); }
       els.forEach(function(e){ e.textContent=text; var dot=e.parentNode.querySelector('.dot'); if(dot) dot.style.background=open?'':'#7a4a1e'; });
     }
     clearInterval(timer); tick(); timer=setInterval(tick,30000);
